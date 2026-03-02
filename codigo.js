@@ -97,10 +97,11 @@
         .q-lead-form { margin:30px 0 20px;display:flex;flex-direction:column;gap:20px;text-align:left; }
         .q-input-row { display:flex;gap:15px; }
         .q-group { flex:1; }
-        .q-group label { display:block;font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--q-text);margin-bottom:8px;text-transform:uppercase; }
-        .q-input { width:100%;padding:15px;border:1px solid var(--q-border);font-size:13px;font-family:'Inter',sans-serif;background:transparent;color:var(--q-text);outline:none;box-sizing:border-box; }
-        .q-input:focus { border-width:2px;padding:14px; }
-        .q-input-hint { font-size:9px;color:var(--q-text-light);letter-spacing:0.5px;margin-top:6px; }
+        .q-group label { display:block;font-size:10px;font-weight:800;letter-spacing:2px;color:#000;margin-bottom:12px;text-transform:uppercase; }
+        .q-input { width:100%;padding:18px 0;border:none;border-bottom:1px solid #e5e5e5;font-size:15px;font-weight:500;font-family:'Inter',sans-serif;background:transparent;color:#000;outline:none;box-sizing:border-box;border-radius:0;transition:0.3s; }
+        .q-input:focus { border-bottom-color:#000;border-bottom-width:2px; }
+        .q-input::placeholder { color:#ccc;font-weight:400; }
+        .q-input-hint { font-size:9px;color:var(--q-text-light);letter-spacing:0.5px;margin-top:8px;text-transform:uppercase;font-weight:500; }
         .q-btn-black { background:var(--q-primary);color:var(--q-bg);border:1px solid var(--q-primary);width:100%;padding:18px;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:0.3s; }
         .q-btn-black:disabled { background:var(--q-gray);color:#999;border-color:var(--q-gray);cursor:not-allowed; }
         .q-btn-black:not(:disabled):hover { background:var(--q-bg);color:var(--q-primary); }
