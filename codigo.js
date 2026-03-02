@@ -82,25 +82,171 @@
         else calcBottom(currentProduct.fit);
     }
 
-    // ─── ESTILOS ──────────────────────────────────────────────────────────────────
-    // (mantém os mesmos estilos do original — sem alterações necessárias)
-    const styles = `/* ... cole aqui o bloco styles original sem alterações ... */`;
+    const styles = `
+        :root { --q-primary:#000000;--q-bg:#ffffff;--q-border:#000000;--q-gray:#f5f5f5;--q-text:#000000;--q-text-light:#666666; }
+        .q-btn-trigger-ia { position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:100;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:5px 24px;font-family:'Inter',sans-serif;font-weight:500;font-size:9px;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-transform:uppercase;transition:0.3s ease;white-space:nowrap; }
+        .q-btn-trigger-ia i { font-size:14px; }
+        .q-btn-trigger-ia:hover { background:var(--q-primary);color:var(--q-bg); }
+        #q-modal-ia { display:none;position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:999999;align-items:center;justify-content:center;font-family:'Inter',sans-serif; }
+        .q-card-ia { background:var(--q-bg);width:100%;max-width:480px;padding:0;position:relative;color:var(--q-text);border:1px solid var(--q-border);max-height:94vh;display:flex;flex-direction:column;overflow:hidden; }
+        .q-content-scroll { padding:40px 30px;overflow-y:auto;flex:1;text-align:center; }
+        .q-close-ia { position:absolute;top:20px;right:20px;background:none;border:none;color:var(--q-text);cursor:pointer;font-size:24px;z-index:100;font-weight:300; }
+        .q-tips-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 0;margin:20px 0;border-top:1px solid var(--q-gray);border-bottom:1px solid var(--q-gray); }
+        .q-tip-item { display:flex;flex-direction:column;align-items:center;gap:8px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light); }
+        .q-tip-item i { color:var(--q-primary);font-size:20px; }
+        .q-lead-form { margin:30px 0 20px;display:flex;flex-direction:column;gap:20px;text-align:left; }
+        .q-input-row { display:flex;gap:15px; }
+        .q-group { flex:1; }
+        .q-group label { display:block;font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--q-text);margin-bottom:8px;text-transform:uppercase; }
+        .q-input { width:100%;padding:15px;border:1px solid var(--q-border);font-size:13px;font-family:'Inter',sans-serif;background:transparent;color:var(--q-text);outline:none;box-sizing:border-box; }
+        .q-input:focus { border-width:2px;padding:14px; }
+        .q-input-hint { font-size:9px;color:var(--q-text-light);letter-spacing:0.5px;margin-top:6px; }
+        .q-btn-black { background:var(--q-primary);color:var(--q-bg);border:1px solid var(--q-primary);width:100%;padding:18px;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:0.3s; }
+        .q-btn-black:disabled { background:var(--q-gray);color:#999;border-color:var(--q-gray);cursor:not-allowed; }
+        .q-btn-black:not(:disabled):hover { background:var(--q-bg);color:var(--q-primary); }
+        .q-btn-buy { background:var(--q-primary);color:var(--q-bg);border:1px solid var(--q-primary);width:100%;padding:20px;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-bottom:15px;transition:0.3s; }
+        .q-btn-buy:hover { background:var(--q-bg);color:var(--q-primary); }
+        .q-btn-outline { background:var(--q-bg);color:var(--q-primary);border:1px solid var(--q-border);width:100%;padding:18px;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:0.3s; }
+        .q-btn-outline:hover { background:var(--q-primary);color:var(--q-bg); }
+        .q-powered-footer { background:var(--q-bg);padding:20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;border-top:1px solid var(--q-gray); }
+        .q-quantic-logo { height:18px; }
+        .q-status-msg { display:none;font-size:9px;letter-spacing:1px;color:#ef4444;margin-top:8px;font-weight:600;text-align:left;text-transform:uppercase; }
+        @keyframes q-slide { from{transform:translateX(-100%)} to{transform:translateX(100%)} }
+        @keyframes q-pulse-text { 0%,100%{opacity:0.4;transform:scale(0.98)} 50%{opacity:1;transform:scale(1)} }
+        .q-content-scroll::-webkit-scrollbar { width:4px; }
+        .q-content-scroll::-webkit-scrollbar-thumb { background:#e5e5e5; }
+        @media(min-width:768px){
+            .q-card-ia.is-result{width:820px!important;max-width:90vw!important;height:560px!important;border-radius:0!important}
+            .q-card-ia.is-result #q-header-provador,.q-card-ia.is-result .q-powered-footer{display:none!important}
+            .q-card-ia.is-result .q-content-scroll{padding:0!important;height:100%!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+            .q-card-ia.is-result #q-step-result{display:flex!important;flex-direction:row!important;width:100%;height:100%;align-items:stretch}
+            .q-card-ia.is-result #q-result-img-col{width:45%!important;height:100%!important;margin:0!important;border:none!important;border-right:1px solid var(--q-border)!important;position:relative!important;flex-shrink:0}
+            .q-card-ia.is-result #q-result-img-col img{position:absolute!important;top:0;left:0;width:100%!important;height:100%!important;object-fit:cover!important;object-position:top center!important}
+            .q-card-ia.is-result #q-result-actions-col{width:55%!important;height:100%!important;padding:40px!important;display:flex!important;flex-direction:column;justify-content:center;box-sizing:border-box;overflow-y:auto}
+            .q-card-ia.is-result .q-res-title{display:block!important;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--q-text);margin-bottom:4px}
+            .q-card-ia.is-result .q-res-subtitle{display:block!important;font-size:11px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:30px}
+            .q-card-ia.is-result .q-metrics-row{display:flex!important;gap:15px;margin-bottom:30px}
+            .q-card-ia.is-result .q-metric-card{flex:1;background:transparent;border:1px solid var(--q-border);border-radius:0;padding:16px}
+            .q-card-ia.is-result .q-metric-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--q-text-light);margin-bottom:6px;display:block}
+            .q-card-ia.is-result .q-metric-value{font-size:20px;font-weight:700;color:var(--q-text)}
+            .q-card-ia.is-result .q-metric-unit{font-size:12px;color:var(--q-text-light);margin-left:2px}
+            .q-card-ia.is-result .q-size-card{display:flex!important;align-items:center;gap:16px;background:var(--q-gray);border:1px solid var(--q-border);border-radius:0;padding:20px;margin-bottom:24px}
+            .q-card-ia.is-result .q-size-circle{width:44px;height:44px;border-radius:50%;background:var(--q-primary);color:var(--q-bg);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+            .q-card-ia.is-result .q-size-info{flex:1}
+            .q-card-ia.is-result .q-size-info strong{display:block;font-size:11px;font-weight:600;color:var(--q-text);margin-bottom:4px;letter-spacing:1.5px;text-transform:uppercase}
+            .q-card-ia.is-result .q-size-info span{font-size:9px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;display:block}
+            .q-card-ia.is-result .q-size-check{color:var(--q-primary);font-size:24px;flex-shrink:0}
+            .q-card-ia.is-result .q-res-note{display:flex!important;align-items:flex-start;gap:8px;font-size:10px;color:var(--q-text-light);font-style:italic;letter-spacing:1px;margin-bottom:24px;line-height:1.5}
+            .q-card-ia.is-result .q-res-note i{flex-shrink:0;margin-top:1px;font-size:14px}
+            .q-card-ia.is-result .q-btn-buy{border-radius:0!important;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px!important;padding:18px!important;margin-bottom:12px;font-weight:600;letter-spacing:2px!important;text-transform:uppercase!important}
+            .q-card-ia.is-result .q-btn-outline{border-radius:0!important;display:flex;align-items:center;justify-content:center;font-size:11px!important;padding:18px!important;margin-top:0;font-weight:600;letter-spacing:2px!important;text-transform:uppercase!important}
+            .q-card-ia.is-result .q-res-mobile-only{display:none!important}
+            .q-card-ia.is-result .q-close-ia{top:16px;right:16px;color:var(--q-text);z-index:10}
+        }
+    `;
 
-    // ─── HTML ─────────────────────────────────────────────────────────────────────
-    // (mantém o mesmo HTML do original — sem alterações necessárias)
-    const html = `<!-- ... cole aqui o bloco html original sem alterações ... -->`;
-
-    // ─── INIT ─────────────────────────────────────────────────────────────────────
+    const html = `
+        <div id="q-modal-ia">
+            <div class="q-card-ia">
+                <button type="button" class="q-close-ia" id="q-close-btn">&times;</button>
+                <div class="q-content-scroll">
+                    <div id="q-header-provador">
+                        <h1 style="margin:0 0 10px 0;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Provador Virtual</h1>
+                        <p style="margin:0;font-size:11px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;">DIVIN\u00C9</p>
+                    </div>
+                    <div id="q-step-upload">
+                        <div class="q-lead-form">
+                            <div class="q-group">
+                                <label>Seu WhatsApp</label>
+                                <input type="tel" id="q-phone" class="q-input" placeholder="(11) 99999-9999" maxlength="15">
+                                <div id="q-phone-error" class="q-status-msg">Insira um n\u00FAmero v\u00E1lido</div>
+                            </div>
+                            <div id="q-fields-top" style="display:none;">
+                                <div class="q-input-row">
+                                    <div class="q-group"><label>Altura (cm)</label><input type="text" id="q-h-val" class="q-input" placeholder="Ex: 175"></div>
+                                    <div class="q-group"><label>Peso (kg)</label><input type="text" id="q-w-val" class="q-input" placeholder="Ex: 80"></div>
+                                </div>
+                            </div>
+                            <div id="q-fields-bottom" style="display:none;">
+                                <div class="q-input-row">
+                                    <div class="q-group"><label>Cintura (cm)</label><input type="text" id="q-cin-val" class="q-input" placeholder="Ex: 84"><p class="q-input-hint">Me\u00E7a ao redor do umbigo</p></div>
+                                    <div class="q-group"><label>Quadril (cm)</label><input type="text" id="q-quad-val" class="q-input" placeholder="Ex: 100"><p class="q-input-hint">Parte mais larga do quadril</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin:10px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Sua foto deve seguir estes requisitos:</p>
+                        <div class="q-tips-grid" style="margin-top:0;">
+                            <div class="q-tip-item"><i class="ph ph-t-shirt"></i><span>Com Roupa</span></div>
+                            <div class="q-tip-item"><i class="ph ph-person"></i><span>Corpo Inteiro</span></div>
+                            <div class="q-tip-item"><i class="ph ph-sun"></i><span>Boa Luz</span></div>
+                        </div>
+                        <div style="display:flex;gap:20px;justify-content:center;margin-top:30px;">
+                            <div id="q-trigger-upload" style="width:120px;height:160px;border:1px solid var(--q-border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--q-gray);transition:0.3s;">
+                                <i class="ph ph-camera-plus" style="font-size:32px;color:var(--q-primary);margin-bottom:10px;"></i>
+                                <span style="font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Enviar Foto</span>
+                                <input type="file" id="q-real-input" accept="image/*" style="display:none">
+                            </div>
+                            <div id="q-pre-view" style="display:none;width:120px;height:160px;overflow:hidden;border:1px solid var(--q-border);">
+                                <img id="q-pre-img" style="width:100%;height:100%;object-fit:cover;">
+                            </div>
+                        </div>
+                        <button class="q-btn-black" id="q-btn-generate" disabled>Ver no meu corpo</button>
+                    </div>
+                    <div style="display:none;padding:60px 0;text-align:center;" id="q-loading-box">
+                        <div style="font-weight:600;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;animation:q-pulse-text 1.5s infinite ease-in-out;">Gerando Prova Virtual...</div>
+                        <div style="height:1px;background:var(--q-gray);width:100%;position:relative;overflow:hidden;">
+                            <div style="position:absolute;top:0;left:0;height:100%;width:30%;background:var(--q-primary);animation:q-slide 1.5s infinite linear;"></div>
+                        </div>
+                    </div>
+                    <div id="q-step-result" style="display:none;flex-direction:column;align-items:center;">
+                        <div id="q-result-img-col" style="width:100%;border:1px solid var(--q-border);margin-bottom:30px;background:var(--q-gray);">
+                            <img id="q-final-view-img" style="width:100%;height:auto;display:block;">
+                        </div>
+                        <div id="q-result-actions-col" style="width:100%;">
+                            <span class="q-res-title" style="display:none;">Provador Virtual</span>
+                            <span class="q-res-subtitle" style="display:none;">Simula\u00E7\u00E3o baseada no seu perfil corporal</span>
+                            <div class="q-metrics-row" style="display:none;">
+                                <div class="q-metric-card"><span class="q-metric-label">Altura</span><span class="q-metric-value" id="q-res-height">\u2014</span><span class="q-metric-unit">m</span></div>
+                                <div class="q-metric-card"><span class="q-metric-label">Peso</span><span class="q-metric-value" id="q-res-weight">\u2014</span><span class="q-metric-unit">kg</span></div>
+                            </div>
+                            <div class="q-size-card" style="display:none;">
+                                <div class="q-size-circle" id="q-res-letter-pc">M</div>
+                                <div class="q-size-info"><strong>Tamanho Recomendado</strong><span>Ajuste ideal para o seu perfil</span></div>
+                                <i class="ph ph-seal-check q-size-check"></i>
+                            </div>
+                            <div class="q-res-mobile-only" style="border-top:1px solid var(--q-border);border-bottom:1px solid var(--q-border);padding:20px 0;width:100%;margin-bottom:30px;display:flex;justify-content:space-between;align-items:center;">
+                                <span style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--q-text-light);">Tamanho Ideal</span>
+                                <div id="q-res-letter" style="font-size:24px;font-weight:400;font-family:monospace;line-height:1;">M</div>
+                            </div>
+                            <div class="q-res-note" style="display:none;">
+                                <i class="ph ph-info"></i>
+                                <span>A simula\u00E7\u00E3o AI considera o caimento do tecido baseado na sua estrutura corporal informada.</span>
+                            </div>
+                            <button class="q-btn-buy" id="q-add-to-cart-btn">
+                                <i class="ph ph-shopping-cart"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="q-btn-outline" id="q-btn-back">Voltar ao Produto</button>
+                            <p class="q-res-mobile-only" style="margin-top:30px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);cursor:pointer;text-decoration:underline;text-underline-offset:4px;" id="q-retry-btn">Tentar outra foto</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="q-powered-footer">
+                    <span style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);">Powered by</span>
+                    <a href="https://provoulevou.com.br" target="_blank" style="display:block;margin:0;padding:0;line-height:0;">
+                        <img src="https://i.ibb.co/jP66Xwqt/logo-provou-levou-sem-fundo.png" class="q-quantic-logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
 
     function init() {
-        // Fontes e ícones
         const fontLink = document.createElement('link');
         fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap';
         fontLink.rel = 'stylesheet';
         document.head.appendChild(fontLink);
 
-        // ⚠️ ADAPTAÇÃO: Loja Integrada usa FontAwesome 3.2.1 nativo.
-        // Phosphor Icons é usado APENAS no modal (não conflita).
         if (!window.phosphorIconsLoaded) {
             const ph = document.createElement('script');
             ph.src = 'https://unpkg.com/@phosphor-icons/web';
@@ -121,11 +267,11 @@
         openBtn.id = 'q-open-ia';
         openBtn.innerHTML = '<i class="ph ph-user"></i><span>Provador Virtual</span>';
 
-        // ⚠️ ADAPTAÇÃO: Seletores de galeria da Loja Integrada
         const imgContainers = [
-            '.produto-imagem-principal',   // container principal da imagem
-            '.produto-detalhe .flexslider',// galeria com flexslider
-            '.produto-detalhe',            // fallback: área de detalhe do produto
+            '.grid_layout_pagprod',
+            '.produto-imagem-principal',
+            '.produto-detalhe .flexslider',
+            '.produto-detalhe',
             '.imagem-produto',
             '#produto-imagem',
         ];
@@ -162,10 +308,7 @@
         }
 
         openBtn.onclick = () => {
-            // ⚠️ ADAPTAÇÃO: Seletores de título da Loja Integrada
-            const prodName = document.querySelector(
-                'h1.titulo, h1.nome-produto, .produto-nome h1, h1'
-            )?.innerText || document.title;
+            const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
             applyProduct(detectProduct(prodName));
             modal.style.display = 'flex';
         };
@@ -220,14 +363,9 @@
         };
 
         genBtn.onclick = async () => {
-            // ⚠️ ADAPTAÇÃO: Seletores de imagem e título da Loja Integrada
-            const prodImgTag = document.querySelector(
-                '.produto-imagem-principal img, .produto-detalhe img, img.foto-produto-detalhe'
-            );
+            const prodImgTag = document.querySelector('.grid_layout_pagprod img, .produto-imagem-principal img, .produto-detalhe img, img.foto-produto-detalhe');
             const prodImg = prodImgTag ? prodImgTag.src : (document.querySelector('meta[property="og:image"]')?.content || '');
-            const prodName = document.querySelector(
-                'h1.titulo, h1.nome-produto, .produto-nome h1, h1'
-            )?.innerText || document.title;
+            const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
 
             document.getElementById('q-step-upload').style.display = 'none';
             document.getElementById('q-loading-box').style.display = 'block';
@@ -266,8 +404,8 @@
                     const cVal = document.getElementById('q-cin-val').value;
                     const resH = document.getElementById('q-res-height');
                     const resW = document.getElementById('q-res-weight');
-                    if (resH) resH.textContent = hVal ? (parseFloat(hVal) / 100).toFixed(2) : '—';
-                    if (resW) resW.textContent = wVal || (cVal ? cVal + ' cm' : '—');
+                    if (resH) resH.textContent = hVal ? (parseFloat(hVal) / 100).toFixed(2) : '\u2014';
+                    if (resW) resW.textContent = wVal || (cVal ? cVal + ' cm' : '\u2014');
 
                     const letterPC = document.getElementById('q-res-letter-pc');
                     if (letterPC) letterPC.textContent = recommendedSize;
@@ -282,25 +420,11 @@
             }
         };
 
-        // ─── ADICIONAR AO CARRINHO — ADAPTADO PARA LOJA INTEGRADA ─────────────────
-
         document.getElementById('q-add-to-cart-btn').onclick = () => {
             const size = recommendedSize;
 
-            // ── 1. Seleção de tamanho na Loja Integrada ──
-            // A LI usa links/âncoras dentro de .atributo-comum ou inputs radio
-            const swatchSelectors = [
-                // Atributos por texto (ex: link com texto "M", "G" etc.)
-                `.atributo-comum a`,
-                `.atributos-produto a`,
-                `input[type="radio"][value="${size}"]`,
-                `input[type="radio"][data-value="${size}"]`,
-                `[data-value="${size}"]`,
-            ];
-
             let selected = false;
 
-            // Busca links de atributo cujo texto bate com o tamanho
             const attrLinks = document.querySelectorAll('.atributo-comum a, .atributos-produto a');
             for (const link of attrLinks) {
                 if (link.textContent.trim().toUpperCase() === size.toUpperCase()) {
@@ -310,9 +434,13 @@
                 }
             }
 
-            // Fallback: radio buttons
             if (!selected) {
-                for (const sel of swatchSelectors.slice(2)) {
+                const radioSelectors = [
+                    `input[type="radio"][value="${size}"]`,
+                    `input[type="radio"][data-value="${size}"]`,
+                    `[data-value="${size}"]`,
+                ];
+                for (const sel of radioSelectors) {
                     const el = document.querySelector(sel);
                     if (el) {
                         el.click();
@@ -323,7 +451,6 @@
                 }
             }
 
-            // Fallback: <select> nativo
             if (!selected) {
                 const selects = document.querySelectorAll('select');
                 for (const sel of selects) {
@@ -340,17 +467,14 @@
                 }
             }
 
-            // ── 2. Clica no botão de comprar da Loja Integrada ──
             function tryAddToCart() {
                 const addBtnSelectors = [
-                    // ⚠️ ADAPTAÇÃO: classes nativas da Loja Integrada
                     '.botao.principal',
                     '.botao-comprar',
                     '.btn-add-to-cart',
                     'button.principal',
                     'a.botao.principal',
                     '[data-btn-comprar]',
-                    // fallbacks genéricos
                     'button[type="submit"]',
                     '#btn-comprar',
                 ];
@@ -358,10 +482,11 @@
                     const btn = document.querySelector(sel);
                     if (btn && !btn.disabled) {
                         btn.click();
-                        // ⚠️ ADAPTAÇÃO: escuta o evento nativo da LI para confirmar adição
-                        $('body').on('minicart_state_changed', function () {
-                            modal.style.display = 'none';
-                        });
+                        if (typeof $ !== 'undefined') {
+                            $('body').on('minicart_state_changed', function () {
+                                modal.style.display = 'none';
+                            });
+                        }
                         return true;
                     }
                 }
@@ -371,7 +496,6 @@
             setTimeout(() => {
                 const ok = tryAddToCart();
                 if (!ok) setTimeout(() => tryAddToCart(), 400);
-                // Fecha modal mesmo sem confirmar via evento
                 setTimeout(() => { modal.style.display = 'none'; }, 1200);
             }, selected ? 300 : 0);
         };
