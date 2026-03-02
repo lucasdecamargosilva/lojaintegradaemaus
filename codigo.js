@@ -354,59 +354,59 @@
         };
 
         genBtn.onclick = async () => {
-            const selectors = [
-                '.wrap_pgprod_grid img',
-                '.grid_layout_pagprod img',
-                '.produto-imagem-principal img',
-                '.conteiner-imagem img',
-                '[data-elemento="imagem-principal"]',
-                '.principal .imagem img',
-                '.produto-detalhe img',
-                '.imagem-produto img',
-                '#produto-imagem',
-                '.flexslider .slides img',
-                '.image-zoom',
-                '.foto-produto',
-                '#foto-produto'
-            ];
+            // Tenta primeiro capturar a variável global de imagem da Loja Integrada
+            let prodImg = window.imagem_grande || '';
 
-            let candidates = [];
-            let tags = document.querySelectorAll(selectors.join(', '));
+            if (!prodImg) {
+                const selectors = [
+                    '#imagemProduto',
+                    '.conteiner-imagem img',
+                    'img[itemprop="image"]',
+                    '.wrap_pgprod_grid img',
+                    '.grid_layout_pagprod img',
+                    '.produto-imagem-principal img',
+                    '[data-elemento="imagem-principal"]',
+                    '.principal .imagem img',
+                    '.foto-produto',
+                    '#foto-produto'
+                ];
 
-            for (let tag of tags) {
-                let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
-                if (url && !url.includes('base64') && !url.includes('PRODUTO_IMAGEM') && url.length > 10) {
-                    let weight = 0;
-                    if (url.includes('1000x1000') || url.includes('2000x2000')) weight += 60;
-                    if (url.includes('/produto/')) weight += 30;
-                    if (tag.closest('.wrap_pgprod_grid') || tag.closest('.grid_layout_pagprod')) weight += 40;
-                    if (url.includes('cdn.awsli.com.br')) weight += 10;
-                    if (url.includes('64x64') || url.includes('128x128') || url.includes('90x90')) weight -= 100;
+                let candidates = [];
+                let tags = document.querySelectorAll(selectors.join(', '));
 
-                    candidates.push({ url, weight });
+                for (let tag of tags) {
+                    let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
+                    if (url && !url.includes('base64') && !url.includes('PRODUTO_IMAGEM') && url.length > 15) {
+                        let weight = 0;
+                        if (url.includes('large') || url.includes('2500x2500') || url.includes('1000x1000')) weight += 60;
+                        if (url.includes('/produto/')) weight += 30;
+                        if (tag.id === 'imagemProduto' || tag.getAttribute('itemprop') === 'image') weight += 50;
+                        if (tag.closest('.conteiner-imagem')) weight += 40;
+                        if (url.includes('64x64') || url.includes('128x128') || url.includes('90x90') || url.includes('64x50')) weight -= 100;
+
+                        candidates.push({ url, weight });
+                    }
                 }
-            }
 
-            candidates.sort((a, b) => b.weight - a.weight);
-            let prodImg = candidates.length > 0 ? candidates[0].url : '';
+                candidates.sort((a, b) => b.weight - a.weight);
+                prodImg = candidates.length > 0 ? candidates[0].url : '';
+            }
 
             if (!prodImg) {
                 prodImg = document.querySelector('meta[property="og:image"]')?.content ||
-                    document.querySelector('meta[name="twitter:image"]')?.content ||
-                    document.querySelector('link[rel="image_src"]')?.href || '';
+                    document.querySelector('meta[name="twitter:image"]')?.content || '';
             }
 
-            // Ensure absolute URL
+            // Garante URL absoluta
             if (prodImg && prodImg.startsWith('//')) {
                 prodImg = window.location.protocol + prodImg;
             } else if (prodImg && !prodImg.startsWith('http')) {
                 prodImg = window.location.origin + (prodImg.startsWith('/') ? '' : '/') + prodImg;
             }
 
-            const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
+            const prodName = document.querySelector('h1.nome-produto, h1.titulo, .produto-nome h1, h1')?.innerText || document.title;
 
-            console.log('[Provador] Candidatos de imagem:', candidates);
-            console.log('[Provador] Imagem Final Escolhida:', prodImg);
+            console.log('[Provador] Produto:', prodName, '| Imagem:', prodImg);
 
             document.getElementById('q-step-upload').style.display = 'none';
             document.getElementById('q-loading-box').style.display = 'block';
