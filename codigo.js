@@ -86,7 +86,7 @@
 
     const styles = `
         :root { --q-primary:#000000;--q-bg:#ffffff;--q-border:#000000;--q-gray:#f5f5f5;--q-text:#000000;--q-text-light:#666666; }
-        .q-btn-trigger-ia { display:inline-flex;align-items:center;gap:6px;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:8px 24px 8px 16px;font-family:'Inter',sans-serif;font-weight:500;font-size:9px;letter-spacing:1px;cursor:pointer;text-align:left;text-transform:uppercase;transition:0.3s ease;white-space:nowrap;margin-top:12px;box-sizing:border-box;line-height:1; }
+        .q-btn-trigger-ia { display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:0 24px;height:42px;font-family:'Inter',sans-serif;font-weight:600;font-size:10px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:0.3s ease;white-space:nowrap;margin-top:15px;margin-bottom:5px;box-sizing:border-box;line-height:1;flex-shrink:0;align-self:flex-start; }
         .q-btn-trigger-ia:hover { background:var(--q-primary);color:var(--q-bg); }
         #q-modal-ia { display:none;position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:999999;align-items:center;justify-content:center;font-family:'Inter',sans-serif; }
         .q-card-ia { background:var(--q-bg);width:100%;max-width:480px;padding:0;position:relative;color:var(--q-text);border:1px solid var(--q-border);max-height:94vh;display:flex;flex-direction:column;overflow:hidden; }
@@ -110,7 +110,7 @@
         .q-btn-outline { background:var(--q-bg);color:var(--q-primary);border:1px solid var(--q-border);width:100%;padding:18px;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:0.3s; }
         .q-btn-outline:hover { background:var(--q-primary);color:var(--q-bg); }
         .q-powered-footer { background:var(--q-bg);padding:20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;border-top:1px solid var(--q-gray); }
-        .q-quantic-logo { height:18px; }
+        .q-quantic-logo { height:18px; filter: brightness(0); }
         .q-status-msg { display:none;font-size:9px;letter-spacing:1px;color:#ef4444;margin-top:8px;font-weight:600;text-align:left;text-transform:uppercase; }
         @keyframes q-slide { from{transform:translateX(-100%)} to{transform:translateX(100%)} }
         @keyframes q-pulse-text { 0%,100%{opacity:0.4;transform:scale(0.98)} 50%{opacity:1;transform:scale(1)} }
@@ -153,7 +153,7 @@
                 <div class="q-content-scroll">
                     <div id="q-header-provador">
                         <h1 style="margin:0 0 10px 0;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Provador Virtual</h1>
-                        <p style="margin:0;font-size:11px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;">DIVIN\u00C9</p>
+                        <p style="margin:0;font-size:11px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;">EMAUS</p>
                     </div>
                     <div id="q-step-upload">
                         <div class="q-lead-form">
@@ -275,8 +275,8 @@
         console.log('[Provador] Container .atributos:', variantContainer ? 'ENCONTRADO' : 'nao encontrado');
 
         if (variantContainer) {
-            variantContainer.insertAdjacentElement('afterend', openBtn);
-            console.log('[Provador] Botao inserido apos .atributos');
+            variantContainer.insertAdjacentElement('beforebegin', openBtn);
+            console.log('[Provador] Botao inserido ANTES de .atributos (mais para cima)');
         } else {
             const principal = document.querySelector('.principal');
             if (principal) {
