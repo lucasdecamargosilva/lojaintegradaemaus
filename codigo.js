@@ -355,33 +355,39 @@
 
         genBtn.onclick = async () => {
             const selectors = [
+                '.wrap_pgprod_grid img',
                 '.grid_layout_pagprod img',
                 '.produto-imagem-principal img',
+                '.conteiner-imagem img',
+                '[data-elemento="imagem-principal"]',
+                '.principal .imagem img',
                 '.produto-detalhe img',
                 '.imagem-produto img',
                 '#produto-imagem',
                 '.flexslider .slides img',
                 '.image-zoom',
-                '[data-elemento="imagem-principal"]',
-                '.principal .imagem img',
                 '.foto-produto',
-                '#foto-produto',
-                '.main-image img',
-                '.product-image img',
-                'img[src*="/produtos/"]',
-                'img[src*="/produto/"]'
+                '#foto-produto'
             ];
 
-            let prodImg = '';
+            let candidates = [];
             let tags = document.querySelectorAll(selectors.join(', '));
 
             for (let tag of tags) {
                 let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
                 if (url && !url.includes('base64') && url.length > 5) {
-                    prodImg = url;
-                    break;
+                    let weight = 0;
+                    if (url.includes('1000x1000') || url.includes('2000x2000')) weight += 50;
+                    if (url.includes('/produto/')) weight += 30;
+                    if (tag.closest('.wrap_pgprod_grid') || tag.closest('.grid_layout_pagprod')) weight += 40;
+                    if (url.includes('cdn.awsli.com.br')) weight += 10;
+
+                    candidates.push({ url, weight });
                 }
             }
+
+            candidates.sort((a, b) => b.weight - a.weight);
+            let prodImg = candidates.length > 0 ? candidates[0].url : '';
 
             if (!prodImg) {
                 prodImg = document.querySelector('meta[property="og:image"]')?.content ||
@@ -398,7 +404,8 @@
 
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
 
-            console.log('[Provador] Gerando prova. Produto:', prodName, '| Imagem Final:', prodImg);
+            console.log('[Provador] Candidatos de imagem:', candidates);
+            console.log('[Provador] Imagem Final Escolhida:', prodImg);
 
             document.getElementById('q-step-upload').style.display = 'none';
             document.getElementById('q-loading-box').style.display = 'block';
