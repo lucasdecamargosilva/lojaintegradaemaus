@@ -84,8 +84,8 @@
 
     const styles = `
         :root { --q-primary:#000000;--q-bg:#ffffff;--q-border:#000000;--q-gray:#f5f5f5;--q-text:#000000;--q-text-light:#666666; }
-        .q-btn-trigger-ia { display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:8px;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:10px 24px;height:auto !important;font-family:'Inter',sans-serif;font-weight:600;font-size:10px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:0.3s ease;white-space:nowrap;margin-top:-5px !important;margin-bottom:10px;box-sizing:border-box;line-height:1.2;flex-shrink:0;align-self:flex-start; }
-        @media(max-width:767px){ .q-btn-trigger-ia { margin-top:-15px !important; padding:8px 16px; font-size:9px; margin-bottom:10px; } }
+        .q-btn-trigger-ia { display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:8px;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:0 24px !important;height:36px !important;min-height:36px !important;font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:0.3s ease;white-space:nowrap;margin-top:-5px !important;margin-bottom:10px;box-sizing:border-box;line-height:36px !important;flex-shrink:0;align-self:flex-start;overflow:hidden; }
+        @media(max-width:767px){ .q-btn-trigger-ia { margin-top:-15px !important; padding:0 16px !important; height:32px !important; min-height:32px !important; line-height:32px !important; font-size:9px; margin-bottom:10px; } }
         .q-btn-trigger-ia:hover { background:var(--q-primary);color:var(--q-bg); }
         #q-modal-ia { display:none;position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:999999;align-items:center;justify-content:center;font-family:'Inter',sans-serif; }
         .q-card-ia { background:var(--q-bg);width:100%;max-width:480px;padding:0;position:relative;color:var(--q-text);border:1px solid var(--q-border);max-height:94vh;display:flex;flex-direction:column;overflow:hidden; }
@@ -150,9 +150,9 @@
             <div class="q-card-ia">
                 <button type="button" class="q-close-ia" id="q-close-btn">&times;</button>
                 <div class="q-content-scroll">
-                    <div id="q-header-provador">
-                        <h1 style="margin:0 0 10px 0;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Provador Virtual</h1>
-                        <p style="margin:0;font-size:11px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;">EMAUS</p>
+                    <div id="q-header-provador" style="border-bottom:2px solid #000;padding-bottom:20px;margin-bottom:30px;display:flex;flex-direction:column;align-items:center;">
+                        <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-1px;text-transform:lowercase;font-family:'Inter',sans-serif;color:#000;line-height:1;">emaus<span style="color:var(--q-primary);position:relative;top:-5px;font-size:20px;">*</span></h1>
+                        <p style="margin:5px 0 0;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#000;opacity:0.5;">Provador Virtual</p>
                     </div>
                     <div id="q-step-upload">
                         <div class="q-lead-form">
