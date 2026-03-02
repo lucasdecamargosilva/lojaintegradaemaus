@@ -86,8 +86,7 @@
 
     const styles = `
         :root { --q-primary:#000000;--q-bg:#ffffff;--q-border:#000000;--q-gray:#f5f5f5;--q-text:#000000;--q-text-light:#666666; }
-        .q-btn-trigger-ia { position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:100;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:5px 24px;font-family:'Inter',sans-serif;font-weight:500;font-size:9px;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-transform:uppercase;transition:0.3s ease;white-space:nowrap; }
-        .q-btn-trigger-ia i { font-size:14px; }
+        .q-btn-trigger-ia { display:block;width:100%;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:10px 24px;font-family:'Inter',sans-serif;font-weight:500;font-size:9px;letter-spacing:1px;cursor:pointer;text-align:center;text-transform:uppercase;transition:0.3s ease;white-space:nowrap;margin-top:12px;box-sizing:border-box; }
         .q-btn-trigger-ia:hover { background:var(--q-primary);color:var(--q-bg); }
         #q-modal-ia { display:none;position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:999999;align-items:center;justify-content:center;font-family:'Inter',sans-serif; }
         .q-card-ia { background:var(--q-bg);width:100%;max-width:480px;padding:0;position:relative;color:var(--q-text);border:1px solid var(--q-border);max-height:94vh;display:flex;flex-direction:column;overflow:hidden; }
@@ -270,35 +269,27 @@
         const openBtn = document.createElement('button');
         openBtn.className = 'q-btn-trigger-ia';
         openBtn.id = 'q-open-ia';
-        openBtn.innerHTML = '<i class="ph ph-user"></i><span>Provador Virtual</span>';
+        openBtn.innerHTML = '<i class="ph ph-user"></i> Provador Virtual';
 
-        const imgContainers = [
-            '.grid_layout_pagprod',
-            '.produto-imagem-principal',
-            '.produto-detalhe .flexslider',
-            '.produto-detalhe',
-            '.imagem-produto',
-            '#produto-imagem',
-        ];
+        // ── Insere o botão ABAIXO do container de variantes (.atributos) ──
+        const variantContainer = document.querySelector('.atributos');
+        console.log('[Provador] Container de variantes (.atributos):', variantContainer ? 'ENCONTRADO' : 'nao encontrado');
 
-        let placed = false;
-        for (const sel of imgContainers) {
-            const el = document.querySelector(sel);
-            console.log('[Provador] Testando seletor:', sel, '->', el ? 'ENCONTRADO' : 'nao encontrado');
-            if (el) {
-                if (window.getComputedStyle(el).position === 'static') el.style.position = 'relative';
-                el.appendChild(openBtn);
-                openBtn.style.cssText = 'position:absolute;top:0;left:50%;transform:translateX(-50%);margin:0;';
-                console.log('[Provador] Botao inserido em:', sel);
-                placed = true;
-                break;
+        if (variantContainer) {
+            variantContainer.insertAdjacentElement('afterend', openBtn);
+            console.log('[Provador] Botao inserido apos .atributos');
+        } else {
+            // fallback: abaixo de .principal
+            const principal = document.querySelector('.principal');
+            console.log('[Provador] Fallback .principal:', principal ? 'ENCONTRADO' : 'nao encontrado');
+            if (principal) {
+                principal.appendChild(openBtn);
+                console.log('[Provador] Botao inserido dentro de .principal');
+            } else {
+                openBtn.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);';
+                document.body.appendChild(openBtn);
+                console.warn('[Provador] Nenhum container encontrado — botao fixo');
             }
-        }
-
-        if (!placed) {
-            console.warn('[Provador] Nenhum container encontrado — botao fixo no rodape');
-            openBtn.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);top:auto;';
-            document.body.appendChild(openBtn);
         }
 
         const modal = document.getElementById('q-modal-ia');
@@ -375,11 +366,11 @@
         };
 
         genBtn.onclick = async () => {
-            const prodImgTag = document.querySelector('.grid_layout_pagprod img, .produto-imagem-principal img, .produto-detalhe img, img.foto-produto-detalhe');
+            const prodImgTag = document.querySelector('.grid_layout_pagprod img, .produto-imagem-principal img, .produto-detalhe img');
             const prodImg = prodImgTag ? prodImgTag.src : (document.querySelector('meta[property="og:image"]')?.content || '');
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
 
-            console.log('[Provador] Gerando prova. Imagem produto:', prodImg);
+            console.log('[Provador] Gerando prova. Produto:', prodName, '| Imagem:', prodImg);
 
             document.getElementById('q-step-upload').style.display = 'none';
             document.getElementById('q-loading-box').style.display = 'block';
@@ -441,31 +432,14 @@
 
             let selected = false;
 
-            const attrLinks = document.querySelectorAll('.atributo-comum a, .atributos-produto a');
+            const attrLinks = document.querySelectorAll('.atributo-comum a, .atributo-item');
             for (const link of attrLinks) {
-                if (link.textContent.trim().toUpperCase() === size.toUpperCase()) {
+                const txt = link.dataset.variacaoNome || link.textContent.trim();
+                if (txt.toUpperCase() === size.toUpperCase()) {
                     link.click();
                     selected = true;
-                    console.log('[Provador] Tamanho selecionado via link atributo');
+                    console.log('[Provador] Tamanho selecionado via .atributo-item:', txt);
                     break;
-                }
-            }
-
-            if (!selected) {
-                const radioSelectors = [
-                    `input[type="radio"][value="${size}"]`,
-                    `input[type="radio"][data-value="${size}"]`,
-                    `[data-value="${size}"]`,
-                ];
-                for (const sel of radioSelectors) {
-                    const el = document.querySelector(sel);
-                    if (el) {
-                        el.click();
-                        el.dispatchEvent(new Event('change', { bubbles: true }));
-                        selected = true;
-                        console.log('[Provador] Tamanho selecionado via radio:', sel);
-                        break;
-                    }
                 }
             }
 
