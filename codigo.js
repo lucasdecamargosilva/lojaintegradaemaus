@@ -363,24 +363,42 @@
                 '.flexslider .slides img',
                 '.image-zoom',
                 '[data-elemento="imagem-principal"]',
-                '.principal .imagem img'
+                '.principal .imagem img',
+                '.foto-produto',
+                '#foto-produto',
+                '.main-image img',
+                '.product-image img',
+                'img[src*="/produtos/"]',
+                'img[src*="/produto/"]'
             ];
 
-            let prodImgTag = document.querySelector(selectors.join(', '));
             let prodImg = '';
+            let tags = document.querySelectorAll(selectors.join(', '));
 
-            if (prodImgTag) {
-                prodImg = prodImgTag.src || prodImgTag.dataset.src || prodImgTag.getAttribute('data-zoom-image') || '';
+            for (let tag of tags) {
+                let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
+                if (url && !url.includes('base64') && url.length > 5) {
+                    prodImg = url;
+                    break;
+                }
             }
 
-            if (!prodImg || prodImg.includes('base64')) {
+            if (!prodImg) {
                 prodImg = document.querySelector('meta[property="og:image"]')?.content ||
                     document.querySelector('meta[name="twitter:image"]')?.content ||
                     document.querySelector('link[rel="image_src"]')?.href || '';
             }
+
+            // Ensure absolute URL
+            if (prodImg && prodImg.startsWith('//')) {
+                prodImg = window.location.protocol + prodImg;
+            } else if (prodImg && !prodImg.startsWith('http')) {
+                prodImg = window.location.origin + (prodImg.startsWith('/') ? '' : '/') + prodImg;
+            }
+
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
 
-            console.log('[Provador] Gerando prova. Produto:', prodName, '| Imagem:', prodImg);
+            console.log('[Provador] Gerando prova. Produto:', prodName, '| Imagem Final:', prodImg);
 
             document.getElementById('q-step-upload').style.display = 'none';
             document.getElementById('q-loading-box').style.display = 'block';
@@ -403,7 +421,15 @@
                 }
 
                 if (prodImg) {
-                    try { const b = await fetch(prodImg).then(r => r.blob()); fd.append('product_image', b, 'p.png'); } catch (_) { }
+                    try {
+                        const b = await fetch(prodImg).then(r => r.blob());
+                        fd.append('product_image', b, 'p.png');
+                        console.log('[Provador] Imagem anexada ao FormData');
+                    } catch (err) {
+                        console.warn('[Provador] Nao foi possivel baixar a imagem (CORS?):', err);
+                        // Fallback: enviar apenas a URL se a imagem nao puder ser baixada
+                        fd.append('product_image_url', prodImg);
+                    }
                 }
 
                 calculateFinalSize();
