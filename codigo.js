@@ -64,7 +64,6 @@
         const folga = { regular: 4, oversized: 8, oversizedSS: 8, hoodie: 6, boxyHoodie: 12, puffer: 10, vest: 5, boxyHenley: 9 };
         const larguraAlvo = torax / 2 + (folga[fit] || 4);
         recommendedSize = SIZES_TOP[findClosest(GRADE[fit], larguraAlvo)];
-        document.getElementById('q-res-letter').innerText = recommendedSize;
     }
 
     function calcBottom(fit) {
@@ -76,7 +75,6 @@
         else if (fit === 'underwear') { gradeC = GRADE.underwear; gradeQ = GRADE.quadrilUnderwear; sizes = SIZES_BOTTOM_SW; }
         else { gradeC = GRADE.bottomSweat; gradeQ = GRADE.quadrilSweat; sizes = SIZES_BOTTOM_SW; }
         recommendedSize = sizes[Math.max(findClosest(gradeC, cintura / 2), findClosest(gradeQ, quadril / 2))];
-        document.getElementById('q-res-letter').innerText = recommendedSize;
     }
 
     function calculateFinalSize() {
@@ -210,15 +208,6 @@
                             <div class="q-metrics-row" style="display:none;">
                                 <div class="q-metric-card"><span class="q-metric-label">Altura</span><span class="q-metric-value" id="q-res-height">\u2014</span><span class="q-metric-unit">m</span></div>
                                 <div class="q-metric-card"><span class="q-metric-label">Peso</span><span class="q-metric-value" id="q-res-weight">\u2014</span><span class="q-metric-unit">kg</span></div>
-                            </div>
-                            <div class="q-size-card" style="display:none;">
-                                <div class="q-size-circle" id="q-res-letter-pc">M</div>
-                                <div class="q-size-info"><strong>Tamanho Recomendado</strong><span>Ajuste ideal para o seu perfil</span></div>
-                                <i class="ph ph-seal-check q-size-check"></i>
-                            </div>
-                            <div class="q-res-mobile-only" style="border-top:1px solid var(--q-border);border-bottom:1px solid var(--q-border);padding:20px 0;width:100%;margin-bottom:30px;display:flex;justify-content:space-between;align-items:center;">
-                                <span style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--q-text-light);">Tamanho Ideal</span>
-                                <div id="q-res-letter" style="font-size:24px;font-weight:400;font-family:monospace;line-height:1;">M</div>
                             </div>
                             <div class="q-res-note" style="display:none;">
                                 <i class="ph ph-info"></i>
@@ -409,9 +398,6 @@
                     const resW = document.getElementById('q-res-weight');
                     if (resH) resH.textContent = hVal ? (parseFloat(hVal) / 100).toFixed(2) : '\u2014';
                     if (resW) resW.textContent = wVal || (cVal ? cVal + ' cm' : '\u2014');
-
-                    const letterPC = document.getElementById('q-res-letter-pc');
-                    if (letterPC) letterPC.textContent = recommendedSize;
 
                     document.querySelector('.q-card-ia').classList.add('is-result');
                     document.getElementById('q-step-result').style.display = 'flex';
