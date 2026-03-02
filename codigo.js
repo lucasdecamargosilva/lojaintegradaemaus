@@ -94,11 +94,11 @@
         .q-tips-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 0;margin:20px 0;border-top:1px solid var(--q-gray);border-bottom:1px solid var(--q-gray); }
         .q-tip-item { display:flex;flex-direction:column;align-items:center;gap:8px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light); }
         .q-tip-item i { color:var(--q-primary);font-size:20px; }
-        .q-lead-form { margin:30px 0 20px;display:flex;flex-direction:column;gap:20px;text-align:left; }
-        .q-input-row { display:flex;gap:15px; }
+        .q-lead-form { margin:40px 0 20px;display:flex;flex-direction:column;gap:35px;text-align:left; }
+        .q-input-row { display:flex;gap:20px; }
         .q-group { flex:1; }
-        .q-group label { display:block;font-size:10px;font-weight:800;letter-spacing:2px;color:#000;margin-bottom:12px;text-transform:uppercase; }
-        .q-input { width:100%;padding:18px 0;border:none;border-bottom:1px solid #e5e5e5;font-size:15px;font-weight:500;font-family:'Inter',sans-serif;background:transparent;color:#000;outline:none;box-sizing:border-box;border-radius:0;transition:0.3s; }
+        .q-group label { display:block;font-size:11px;font-weight:800;letter-spacing:2px;color:#000;margin-bottom:15px;text-transform:uppercase; }
+        .q-input { width:100%;padding:22px 0;border:none;border-bottom:1px solid #e5e5e5;font-size:16px;font-weight:500;font-family:'Inter',sans-serif;background:transparent;color:#000;outline:none;box-sizing:border-box;border-radius:0;transition:0.3s;line-height:1.2; }
         .q-input:focus { border-bottom-color:#000;border-bottom-width:2px; }
         .q-input::placeholder { color:#ccc;font-weight:400; }
         .q-input-hint { font-size:9px;color:var(--q-text-light);letter-spacing:0.5px;margin-top:8px;text-transform:uppercase;font-weight:500; }
