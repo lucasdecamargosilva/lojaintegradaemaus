@@ -1,4 +1,6 @@
 (function () {
+    console.log('[Provador] Script carregado');
+
     const WEBHOOK_PROVA = 'https://n8n.segredosdodrop.com/webhook/quantic-materialize';
 
     const SIZES_TOP = ['XXP', 'XP', 'P', 'M', 'G', 'XG', 'XXG', '3XG', '4XG', '5XG'];
@@ -242,6 +244,8 @@
     `;
 
     function init() {
+        console.log('[Provador] init() executado');
+
         const fontLink = document.createElement('link');
         fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap';
         fontLink.rel = 'stylesheet';
@@ -261,6 +265,7 @@
         const modalContainer = document.createElement('div');
         modalContainer.innerHTML = html;
         document.body.appendChild(modalContainer);
+        console.log('[Provador] Modal HTML injetado');
 
         const openBtn = document.createElement('button');
         openBtn.className = 'q-btn-trigger-ia';
@@ -275,17 +280,23 @@
             '.imagem-produto',
             '#produto-imagem',
         ];
+
         let placed = false;
         for (const sel of imgContainers) {
             const el = document.querySelector(sel);
+            console.log('[Provador] Testando seletor:', sel, '->', el ? 'ENCONTRADO' : 'nao encontrado');
             if (el) {
                 if (window.getComputedStyle(el).position === 'static') el.style.position = 'relative';
                 el.appendChild(openBtn);
                 openBtn.style.cssText = 'position:absolute;top:0;left:50%;transform:translateX(-50%);margin:0;';
-                placed = true; break;
+                console.log('[Provador] Botao inserido em:', sel);
+                placed = true;
+                break;
             }
         }
+
         if (!placed) {
+            console.warn('[Provador] Nenhum container encontrado — botao fixo no rodape');
             openBtn.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);top:auto;';
             document.body.appendChild(openBtn);
         }
@@ -309,6 +320,7 @@
 
         openBtn.onclick = () => {
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
+            console.log('[Provador] Abrindo modal. Produto:', prodName);
             applyProduct(detectProduct(prodName));
             modal.style.display = 'flex';
         };
@@ -367,6 +379,8 @@
             const prodImg = prodImgTag ? prodImgTag.src : (document.querySelector('meta[property="og:image"]')?.content || '');
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
 
+            console.log('[Provador] Gerando prova. Imagem produto:', prodImg);
+
             document.getElementById('q-step-upload').style.display = 'none';
             document.getElementById('q-loading-box').style.display = 'block';
 
@@ -415,6 +429,7 @@
 
                 } else { throw new Error(); }
             } catch (e) {
+                console.error('[Provador] Erro ao gerar prova:', e);
                 alert('Ocorreu um erro ao processar sua imagem. Tente novamente.');
                 location.reload();
             }
@@ -422,6 +437,7 @@
 
         document.getElementById('q-add-to-cart-btn').onclick = () => {
             const size = recommendedSize;
+            console.log('[Provador] Adicionando ao carrinho. Tamanho:', size);
 
             let selected = false;
 
@@ -430,6 +446,7 @@
                 if (link.textContent.trim().toUpperCase() === size.toUpperCase()) {
                     link.click();
                     selected = true;
+                    console.log('[Provador] Tamanho selecionado via link atributo');
                     break;
                 }
             }
@@ -446,6 +463,7 @@
                         el.click();
                         el.dispatchEvent(new Event('change', { bubbles: true }));
                         selected = true;
+                        console.log('[Provador] Tamanho selecionado via radio:', sel);
                         break;
                     }
                 }
@@ -462,26 +480,25 @@
                         sel.value = opt.value;
                         sel.dispatchEvent(new Event('change', { bubbles: true }));
                         selected = true;
+                        console.log('[Provador] Tamanho selecionado via select');
                         break;
                     }
                 }
             }
 
+            if (!selected) console.warn('[Provador] Tamanho nao encontrado na pagina:', size);
+
             function tryAddToCart() {
                 const addBtnSelectors = [
-                    '.botao.principal',
-                    '.botao-comprar',
-                    '.btn-add-to-cart',
-                    'button.principal',
-                    'a.botao.principal',
-                    '[data-btn-comprar]',
-                    'button[type="submit"]',
-                    '#btn-comprar',
+                    '.botao.principal', '.botao-comprar', '.btn-add-to-cart',
+                    'button.principal', 'a.botao.principal', '[data-btn-comprar]',
+                    'button[type="submit"]', '#btn-comprar',
                 ];
                 for (const sel of addBtnSelectors) {
                     const btn = document.querySelector(sel);
                     if (btn && !btn.disabled) {
                         btn.click();
+                        console.log('[Provador] Botao comprar clicado:', sel);
                         if (typeof $ !== 'undefined') {
                             $('body').on('minicart_state_changed', function () {
                                 modal.style.display = 'none';
@@ -490,6 +507,7 @@
                         return true;
                     }
                 }
+                console.warn('[Provador] Botao comprar nao encontrado');
                 return false;
             }
 
@@ -499,9 +517,16 @@
                 setTimeout(() => { modal.style.display = 'none'; }, 1200);
             }, selected ? 300 : 0);
         };
+
+        console.log('[Provador] Todos os eventos registrados com sucesso');
     }
 
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
+    if (document.readyState === 'loading') {
+        console.log('[Provador] Aguardando DOMContentLoaded...');
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        console.log('[Provador] DOM ja pronto, executando init()');
+        init();
+    }
 
 })();
