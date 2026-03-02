@@ -375,12 +375,13 @@
 
             for (let tag of tags) {
                 let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
-                if (url && !url.includes('base64') && url.length > 5) {
+                if (url && !url.includes('base64') && !url.includes('PRODUTO_IMAGEM') && url.length > 10) {
                     let weight = 0;
-                    if (url.includes('1000x1000') || url.includes('2000x2000')) weight += 50;
+                    if (url.includes('1000x1000') || url.includes('2000x2000')) weight += 60;
                     if (url.includes('/produto/')) weight += 30;
                     if (tag.closest('.wrap_pgprod_grid') || tag.closest('.grid_layout_pagprod')) weight += 40;
                     if (url.includes('cdn.awsli.com.br')) weight += 10;
+                    if (url.includes('64x64') || url.includes('128x128') || url.includes('90x90')) weight -= 100;
 
                     candidates.push({ url, weight });
                 }
