@@ -353,8 +353,30 @@
         };
 
         genBtn.onclick = async () => {
-            const prodImgTag = document.querySelector('.grid_layout_pagprod img, .produto-imagem-principal img, .produto-detalhe img');
-            const prodImg = prodImgTag ? prodImgTag.src : (document.querySelector('meta[property="og:image"]')?.content || '');
+            const selectors = [
+                '.grid_layout_pagprod img',
+                '.produto-imagem-principal img',
+                '.produto-detalhe img',
+                '.imagem-produto img',
+                '#produto-imagem',
+                '.flexslider .slides img',
+                '.image-zoom',
+                '[data-elemento="imagem-principal"]',
+                '.principal .imagem img'
+            ];
+
+            let prodImgTag = document.querySelector(selectors.join(', '));
+            let prodImg = '';
+
+            if (prodImgTag) {
+                prodImg = prodImgTag.src || prodImgTag.dataset.src || prodImgTag.getAttribute('data-zoom-image') || '';
+            }
+
+            if (!prodImg || prodImg.includes('base64')) {
+                prodImg = document.querySelector('meta[property="og:image"]')?.content ||
+                    document.querySelector('meta[name="twitter:image"]')?.content ||
+                    document.querySelector('link[rel="image_src"]')?.href || '';
+            }
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
 
             console.log('[Provador] Gerando prova. Produto:', prodName, '| Imagem:', prodImg);
