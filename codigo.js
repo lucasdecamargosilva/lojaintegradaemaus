@@ -261,7 +261,7 @@
         const openBtn = document.createElement('button');
         openBtn.className = 'q-btn-trigger-ia';
         openBtn.id = 'q-open-ia';
-        openBtn.innerHTML = '<img src="https://i.ibb.co/chm5RM6W/quero-provar2-1.png" alt="Quero Provar" draggable="false">';
+        openBtn.innerHTML = '<img src="https://i.ibb.co/99S0wT5v/quero-provar2-1-1.png" alt="Quero Provar" draggable="false">';
 
         const variantContainer = document.querySelector('.atributos');
         console.log('[Provador] Container .atributos:', variantContainer ? 'ENCONTRADO' : 'nao encontrado');
