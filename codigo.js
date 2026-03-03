@@ -91,19 +91,13 @@
             100% { transform: translateY(0px); }
         }
 
-        @keyframes q-btn-shine {
-            0%   { left: -100%; }
-            50%  { left: 100%; }
-            100% { left: 100%; }
-        }
-
         .q-btn-trigger-ia {
             display: block !important;
             width: 100% !important;
             background: none !important;
             border: none !important;
             padding: 0 !important;
-            margin: 8px 0 10px 0 !important;
+            margin: 0 0 8px 0 !important;
             cursor: pointer;
             overflow: hidden;
             text-align: left;
@@ -122,7 +116,7 @@
         }
         @media(max-width:767px){
             .q-btn-trigger-ia {
-                margin: 6px 0 10px 0 !important;
+                margin: 0 0 6px 0 !important;
             }
             .q-btn-trigger-ia img {
                 height: 34px;
