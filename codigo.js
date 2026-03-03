@@ -84,10 +84,51 @@
 
     const styles = `
         :root { --q-primary:#000000;--q-bg:#ffffff;--q-border:#000000;--q-gray:#f5f5f5;--q-text:#000000;--q-text-light:#666666; }
-        .q-btn-trigger-ia { display:inline-flex !important;align-items:center !important;justify-content:center !important;background:none !important;border:none !important;padding:0 !important;margin-top:-5px !important;margin-bottom:10px;cursor:pointer;transition:opacity 0.3s ease;flex-shrink:0;align-self:flex-start;overflow:hidden; }
-        .q-btn-trigger-ia img { display:block;height:40px;width:auto; }
-        @media(max-width:767px){ .q-btn-trigger-ia { margin-top:-15px !important;margin-bottom:10px; } .q-btn-trigger-ia img { height:34px; } }
-        .q-btn-trigger-ia:hover { opacity:0.8; }
+
+        @keyframes q-btn-float {
+            0%   { transform: translateY(0px); }
+            50%  { transform: translateY(-4px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes q-btn-shine {
+            0%   { left: -100%; }
+            50%  { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .q-btn-trigger-ia {
+            display: block !important;
+            width: 100% !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 8px 0 10px 0 !important;
+            cursor: pointer;
+            overflow: hidden;
+            text-align: left;
+            position: relative;
+        }
+        .q-btn-trigger-ia img {
+            display: block;
+            height: 40px;
+            width: auto;
+            animation: q-btn-float 2.6s ease-in-out infinite;
+            transform-origin: center;
+        }
+        .q-btn-trigger-ia:hover img {
+            animation-play-state: paused;
+            opacity: 0.85;
+        }
+        @media(max-width:767px){
+            .q-btn-trigger-ia {
+                margin: 6px 0 10px 0 !important;
+            }
+            .q-btn-trigger-ia img {
+                height: 34px;
+            }
+        }
+
         #q-modal-ia { display:none;position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:999999;align-items:center;justify-content:center;font-family:'Inter',sans-serif; }
         .q-card-ia { background:var(--q-bg);width:100%;max-width:480px;padding:0;position:relative;color:var(--q-text);border:1px solid var(--q-border);max-height:94vh;display:flex;flex-direction:column;overflow:hidden; }
         .q-content-scroll { padding:40px 30px;overflow-y:auto;flex:1;text-align:center; }
@@ -161,7 +202,7 @@
                             <div class="q-group">
                                 <label>Seu WhatsApp</label>
                                 <input type="tel" id="q-phone" class="q-input" placeholder="(11) 99999-9999" maxlength="15">
-                                <div id="q-phone-error" class="q-status-msg">Insira um n\u00FAmero v\u00E1lido</div>
+                                <div id="q-phone-error" class="q-status-msg">Insira um número válido</div>
                             </div>
                             <div id="q-fields-top" style="display:none;">
                                 <div class="q-input-row">
@@ -171,7 +212,7 @@
                             </div>
                             <div id="q-fields-bottom" style="display:none;">
                                 <div class="q-input-row">
-                                    <div class="q-group"><label>Cintura (cm)</label><input type="text" id="q-cin-val" class="q-input" placeholder="Ex: 84"><p class="q-input-hint">Me\u00E7a ao redor do umbigo</p></div>
+                                    <div class="q-group"><label>Cintura (cm)</label><input type="text" id="q-cin-val" class="q-input" placeholder="Ex: 84"><p class="q-input-hint">Meça ao redor do umbigo</p></div>
                                     <div class="q-group"><label>Quadril (cm)</label><input type="text" id="q-quad-val" class="q-input" placeholder="Ex: 100"><p class="q-input-hint">Parte mais larga do quadril</p></div>
                                 </div>
                             </div>
@@ -206,14 +247,14 @@
                         </div>
                         <div id="q-result-actions-col" style="width:100%;">
                             <span class="q-res-title" style="display:none;">Provador Virtual</span>
-                            <span class="q-res-subtitle" style="display:none;">Simula\u00E7\u00E3o baseada no seu perfil corporal</span>
+                            <span class="q-res-subtitle" style="display:none;">Simulação baseada no seu perfil corporal</span>
                             <div class="q-metrics-row" style="display:none;">
-                                <div class="q-metric-card"><span class="q-metric-label">Altura</span><span class="q-metric-value" id="q-res-height">\u2014</span><span class="q-metric-unit">m</span></div>
-                                <div class="q-metric-card"><span class="q-metric-label">Peso</span><span class="q-metric-value" id="q-res-weight">\u2014</span><span class="q-metric-unit">kg</span></div>
+                                <div class="q-metric-card"><span class="q-metric-label">Altura</span><span class="q-metric-value" id="q-res-height">—</span><span class="q-metric-unit">m</span></div>
+                                <div class="q-metric-card"><span class="q-metric-label">Peso</span><span class="q-metric-value" id="q-res-weight">—</span><span class="q-metric-unit">kg</span></div>
                             </div>
                             <div class="q-res-note" style="display:none;">
                                 <i class="ph ph-info"></i>
-                                <span>A simula\u00E7\u00E3o AI considera o caimento do tecido baseado na sua estrutura corporal informada.</span>
+                                <span>A simulação AI considera o caimento do tecido baseado na sua estrutura corporal informada.</span>
                             </div>
                             <button class="q-btn-buy" id="q-add-to-cart-btn">
                                 <i class="ph ph-shopping-cart"></i>
@@ -263,22 +304,20 @@
         openBtn.id = 'q-open-ia';
         openBtn.innerHTML = '<img src="https://i.ibb.co/99S0wT5v/quero-provar2-1-1.png" alt="Quero Provar" draggable="false">';
 
-        const variantContainer = document.querySelector('.atributos');
-        console.log('[Provador] Container .atributos:', variantContainer ? 'ENCONTRADO' : 'nao encontrado');
+        // ✅ Sempre dentro de .principal, logo após .atributos
+        const principal = document.querySelector('.principal');
+        const variantContainer = document.querySelector('.principal .atributos');
 
         if (variantContainer) {
             variantContainer.insertAdjacentElement('afterend', openBtn);
-            console.log('[Provador] Botao inserido APOS .atributos');
+            console.log('[Provador] Botão inserido APÓS .atributos dentro de .principal');
+        } else if (principal) {
+            principal.insertAdjacentElement('afterbegin', openBtn);
+            console.log('[Provador] .atributos não encontrado — botão inserido no início de .principal');
         } else {
-            const principal = document.querySelector('.principal');
-            if (principal) {
-                principal.appendChild(openBtn);
-                console.log('[Provador] Botao inserido dentro de .principal');
-            } else {
-                openBtn.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);';
-                document.body.appendChild(openBtn);
-                console.warn('[Provador] Nenhum container encontrado — botao fixo');
-            }
+            openBtn.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);';
+            document.body.appendChild(openBtn);
+            console.warn('[Provador] Nenhum container encontrado — botão fixo');
         }
 
         const modal = document.getElementById('q-modal-ia');
@@ -355,7 +394,6 @@
         };
 
         genBtn.onclick = async () => {
-            // Tenta primeiro capturar a variável global de imagem da Loja Integrada
             let prodImg = window.imagem_grande || '';
 
             if (!prodImg) {
@@ -384,7 +422,6 @@
                         if (tag.id === 'imagemProduto' || tag.getAttribute('itemprop') === 'image') weight += 50;
                         if (tag.closest('.conteiner-imagem')) weight += 40;
                         if (url.includes('64x64') || url.includes('128x128') || url.includes('90x90') || url.includes('64x50')) weight -= 100;
-
                         candidates.push({ url, weight });
                     }
                 }
@@ -398,7 +435,6 @@
                     document.querySelector('meta[name="twitter:image"]')?.content || '';
             }
 
-            // Garante URL absoluta
             if (prodImg && prodImg.startsWith('//')) {
                 prodImg = window.location.protocol + prodImg;
             } else if (prodImg && !prodImg.startsWith('http')) {
@@ -406,7 +442,6 @@
             }
 
             const prodName = document.querySelector('h1.nome-produto, h1.titulo, .produto-nome h1, h1')?.innerText || document.title;
-
             console.log('[Provador] Produto:', prodName, '| Imagem:', prodImg);
 
             document.getElementById('q-step-upload').style.display = 'none';
@@ -435,8 +470,7 @@
                         fd.append('product_image', b, 'p.png');
                         console.log('[Provador] Imagem anexada ao FormData');
                     } catch (err) {
-                        console.warn('[Provador] Nao foi possivel baixar a imagem (CORS?):', err);
-                        // Fallback: enviar apenas a URL se a imagem nao puder ser baixada
+                        console.warn('[Provador] Não foi possível baixar a imagem (CORS?):', err);
                         fd.append('product_image_url', prodImg);
                     }
                 }
@@ -454,14 +488,13 @@
                     const cVal = document.getElementById('q-cin-val').value;
                     const resH = document.getElementById('q-res-height');
                     const resW = document.getElementById('q-res-weight');
-                    if (resH) resH.textContent = hVal ? (parseFloat(hVal) / 100).toFixed(2) : '\u2014';
-                    if (resW) resW.textContent = wVal || (cVal ? cVal + ' cm' : '\u2014');
+                    if (resH) resH.textContent = hVal ? (parseFloat(hVal) / 100).toFixed(2) : '—';
+                    if (resW) resW.textContent = wVal || (cVal ? cVal + ' cm' : '—');
 
                     document.querySelector('.q-card-ia').classList.add('is-result');
                     const stepRes = document.getElementById('q-step-result');
                     stepRes.style.display = 'flex';
 
-                    // Scroll suave para baixo para mostrar o resultado (especialmente no mobile)
                     setTimeout(() => {
                         const content = document.querySelector('.q-content-scroll');
                         if (content) content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' });
@@ -509,7 +542,7 @@
                 }
             }
 
-            if (!selected) console.warn('[Provador] Tamanho nao encontrado na pagina:', size);
+            if (!selected) console.warn('[Provador] Tamanho não encontrado na página:', size);
 
             function tryAddToCart() {
                 const addBtnSelectors = [
@@ -521,7 +554,7 @@
                     const btn = document.querySelector(sel);
                     if (btn && !btn.disabled) {
                         btn.click();
-                        console.log('[Provador] Botao comprar clicado:', sel);
+                        console.log('[Provador] Botão comprar clicado:', sel);
                         if (typeof $ !== 'undefined') {
                             $('body').on('minicart_state_changed', function () {
                                 modal.style.display = 'none';
@@ -530,7 +563,7 @@
                         return true;
                     }
                 }
-                console.warn('[Provador] Botao comprar nao encontrado');
+                console.warn('[Provador] Botão comprar não encontrado');
                 return false;
             }
 
@@ -548,7 +581,7 @@
         console.log('[Provador] Aguardando DOMContentLoaded...');
         document.addEventListener('DOMContentLoaded', init);
     } else {
-        console.log('[Provador] DOM ja pronto, executando init()');
+        console.log('[Provador] DOM já pronto, executando init()');
         init();
     }
 
