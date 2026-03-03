@@ -84,9 +84,10 @@
 
     const styles = `
         :root { --q-primary:#000000;--q-bg:#ffffff;--q-border:#000000;--q-gray:#f5f5f5;--q-text:#000000;--q-text-light:#666666; }
-        .q-btn-trigger-ia { display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:8px;background:var(--q-bg);color:var(--q-text);border:1px solid var(--q-border);padding:0 24px !important;height:36px !important;min-height:36px !important;font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1.5px;cursor:pointer;text-transform:uppercase;transition:0.3s ease;white-space:nowrap;margin-top:-5px !important;margin-bottom:10px;box-sizing:border-box;line-height:36px !important;flex-shrink:0;align-self:flex-start;overflow:hidden; }
-        @media(max-width:767px){ .q-btn-trigger-ia { margin-top:-15px !important; padding:0 16px !important; height:32px !important; min-height:32px !important; line-height:32px !important; font-size:9px; margin-bottom:10px; } }
-        .q-btn-trigger-ia:hover { background:var(--q-primary);color:var(--q-bg); }
+        .q-btn-trigger-ia { display:inline-flex !important;align-items:center !important;justify-content:center !important;background:none !important;border:none !important;padding:0 !important;margin-top:-5px !important;margin-bottom:10px;cursor:pointer;transition:opacity 0.3s ease;flex-shrink:0;align-self:flex-start;overflow:hidden; }
+        .q-btn-trigger-ia img { display:block;height:40px;width:auto; }
+        @media(max-width:767px){ .q-btn-trigger-ia { margin-top:-15px !important;margin-bottom:10px; } .q-btn-trigger-ia img { height:34px; } }
+        .q-btn-trigger-ia:hover { opacity:0.8; }
         #q-modal-ia { display:none;position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:999999;align-items:center;justify-content:center;font-family:'Inter',sans-serif; }
         .q-card-ia { background:var(--q-bg);width:100%;max-width:480px;padding:0;position:relative;color:var(--q-text);border:1px solid var(--q-border);max-height:94vh;display:flex;flex-direction:column;overflow:hidden; }
         .q-content-scroll { padding:40px 30px;overflow-y:auto;flex:1;text-align:center; }
@@ -260,7 +261,7 @@
         const openBtn = document.createElement('button');
         openBtn.className = 'q-btn-trigger-ia';
         openBtn.id = 'q-open-ia';
-        openBtn.innerHTML = '<i class="ph ph-user"></i> Provador Virtual';
+        openBtn.innerHTML = '<img src="https://i.ibb.co/chm5RM6W/quero-provar2-1.png" alt="Quero Provar" draggable="false">';
 
         const variantContainer = document.querySelector('.atributos');
         console.log('[Provador] Container .atributos:', variantContainer ? 'ENCONTRADO' : 'nao encontrado');
