@@ -383,21 +383,11 @@
             return candidates.map(c => c.url);
         }
 
-        function isBackPhoto(index) {
-            // Heurística: geralmente a foto de costas é a 2ª imagem (index 1)
-            return index === 1;
-        }
-
-        function updatePhotoHint(index) {
+        function updatePhotoHint() {
             const hint = document.getElementById('q-photo-hint');
             if (!hint) return;
-            if (isBackPhoto(index)) {
-                hint.textContent = '⚠️ Você selecionou a foto de costas — envie também uma foto sua de costas.';
-                hint.style.display = 'block';
-            } else {
-                hint.textContent = '';
-                hint.style.display = 'none';
-            }
+            hint.textContent = '⚠️ Atenção: envie uma foto sua no mesmo ângulo da peça selecionada.';
+            hint.style.display = 'block';
         }
 
         function renderProductImages() {
@@ -433,7 +423,7 @@
                 if (header && header.tagName === 'P') header.style.display = 'block';
 
                 selectedProductImage = images[0];
-                updatePhotoHint(0);
+                updatePhotoHint();
 
                 images.forEach((imgUrl, index) => {
                     const imgEl = document.createElement('img');
@@ -443,7 +433,7 @@
                         document.querySelectorAll('.q-prod-img-option').forEach(el => el.classList.remove('selected'));
                         imgEl.classList.add('selected');
                         selectedProductImage = imgUrl;
-                        updatePhotoHint(index);
+                        updatePhotoHint();
                     };
                     container.appendChild(imgEl);
                 });
