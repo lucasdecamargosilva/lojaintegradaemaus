@@ -409,7 +409,7 @@
             }));
 
             Promise.all(checks).then(results => {
-                const images = results.filter(Boolean).slice(0, 2);
+                const images = results.filter(Boolean).slice(0, 3);
 
                 const header = container.previousElementSibling;
 
