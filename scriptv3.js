@@ -386,7 +386,7 @@
         function updatePhotoHint() {
             const hint = document.getElementById('q-photo-hint');
             if (!hint) return;
-            hint.textContent = '⚠️ Atenção: envie uma foto sua no mesmo ângulo da peça selecionada.';
+            hint.textContent = '⚠️ Se você escolheu a foto de costas, envie uma foto sua também de costas.';
             hint.style.display = 'block';
         }
 
@@ -403,7 +403,14 @@
 
             const checks = allImages.map(url => new Promise(resolve => {
                 const tester = new Image();
-                tester.onload = () => resolve(url);
+                tester.onload = () => {
+                    // Descarta imagens muito pequenas (miniaturas, placeholders borrados)
+                    if (tester.naturalWidth < 200 || tester.naturalHeight < 200) {
+                        resolve(null);
+                    } else {
+                        resolve(url);
+                    }
+                };
                 tester.onerror = () => resolve(null);
                 tester.src = url;
             }));
