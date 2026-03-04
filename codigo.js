@@ -180,6 +180,10 @@
             .q-card-ia.is-result .q-res-mobile-only{display:none!important}
             .q-card-ia.is-result .q-close-ia{top:16px;right:16px;color:var(--q-text);z-index:10}
         }
+        .q-prod-img-option { width:80px;height:100px;object-fit:cover;border:2px solid transparent;cursor:pointer;border-radius:4px;transition:0.3s;flex-shrink:0; }
+        .q-prod-img-option.selected { border-color:var(--q-primary); }
+        #q-product-images::-webkit-scrollbar { height:4px; }
+        #q-product-images::-webkit-scrollbar-thumb { background:#e5e5e5; }
     `;
 
     const html = `
@@ -211,6 +215,8 @@
                                 </div>
                             </div>
                         </div>
+                        <p style="margin:20px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Qual foto da pe&ccedil;a voc&ecirc; quer provar?</p>
+                        <div id="q-product-images" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:20px;"></div>
                         <p style="margin:10px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Sua foto deve seguir estes requisitos:</p>
                         <div class="q-tips-grid" style="margin-top:0;">
                             <div class="q-tip-item"><i class="ph ph-t-shirt"></i><span>Com Roupa</span></div>
@@ -324,6 +330,86 @@
         const phoneInput = document.getElementById('q-phone');
 
         let userPhoto = null;
+        let selectedProductImage = '';
+
+        function getAllProductImages() {
+            const selectors = [
+                '#imagemProduto', '.conteiner-imagem img', 'img[itemprop="image"]',
+                '.wrap_pgprod_grid img', '.grid_layout_pagprod img', '.produto-imagem-principal img',
+                '[data-elemento="imagem-principal"]', '.principal .imagem img', '.foto-produto',
+                '#foto-produto', '.slick-slide:not(.slick-cloned) img', '.lista-miniaturas img',
+                '[data-tns-role="content"] img', '.produto-video-imagem img', '.flexslider .slides img'
+            ];
+
+            let candidates = [];
+            let tags = document.querySelectorAll(selectors.join(', '));
+            let seen = new Set();
+
+            for (let tag of tags) {
+                let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
+                if (url && !url.includes('base64') && !url.includes('PRODUTO_IMAGEM') && url.length > 15) {
+                    if (url.startsWith('//')) {
+                        url = window.location.protocol + url;
+                    } else if (!url.startsWith('http')) {
+                        url = window.location.origin + (url.startsWith('/') ? '' : '/') + url;
+                    }
+                    let cleanUrl = url.split('?')[0];
+                    if (seen.has(cleanUrl)) continue;
+                    seen.add(cleanUrl);
+
+                    let weight = 0;
+                    if (url.includes('large') || url.includes('2500x2500') || url.includes('1000x1000') || url.includes('zoom')) weight += 60;
+                    if (url.includes('/produto/')) weight += 30;
+                    if (tag.id === 'imagemProduto' || tag.getAttribute('itemprop') === 'image') weight += 50;
+                    if (tag.closest('.conteiner-imagem')) weight += 40;
+                    if (url.includes('64x64') || url.includes('128x128') || url.includes('90x90') || url.includes('64x50')) weight -= 100;
+                    candidates.push({ url, weight });
+                }
+            }
+            candidates.sort((a, b) => b.weight - a.weight);
+
+            if (candidates.length === 0) {
+                let fallbackUrl = window.imagem_grande || document.querySelector('meta[property="og:image"]')?.content || document.querySelector('meta[name="twitter:image"]')?.content || '';
+                if (fallbackUrl) {
+                    if (fallbackUrl.startsWith('//')) fallbackUrl = window.location.protocol + fallbackUrl;
+                    else if (!fallbackUrl.startsWith('http')) fallbackUrl = window.location.origin + (fallbackUrl.startsWith('/') ? '' : '/') + fallbackUrl;
+                    candidates.push({ url: fallbackUrl, weight: 0 });
+                }
+            }
+            return candidates.map(c => c.url);
+        }
+
+        function renderProductImages() {
+            const container = document.getElementById('q-product-images');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const images = getAllProductImages().slice(0, 10);
+            if (images.length === 0) {
+                container.style.display = 'none';
+                const header = container.previousElementSibling;
+                if (header && header.tagName === 'P') header.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'flex';
+            const header = container.previousElementSibling;
+            if (header && header.tagName === 'P') header.style.display = 'block';
+
+            selectedProductImage = images[0];
+
+            images.forEach((imgUrl, index) => {
+                const imgEl = document.createElement('img');
+                imgEl.src = imgUrl;
+                imgEl.className = 'q-prod-img-option' + (index === 0 ? ' selected' : '');
+                imgEl.onclick = () => {
+                    document.querySelectorAll('.q-prod-img-option').forEach(el => el.classList.remove('selected'));
+                    imgEl.classList.add('selected');
+                    selectedProductImage = imgUrl;
+                };
+                container.appendChild(imgEl);
+            });
+        }
 
         function applyProduct(product) {
             currentProduct = product;
@@ -335,6 +421,7 @@
             const prodName = document.querySelector('h1.titulo, h1.nome-produto, .produto-nome h1, h1')?.innerText || document.title;
             console.log('[Provador] Abrindo modal. Produto:', prodName);
             applyProduct(detectProduct(prodName));
+            renderProductImages();
             modal.style.display = 'flex';
         };
 
@@ -388,51 +475,11 @@
         };
 
         genBtn.onclick = async () => {
-            let prodImg = window.imagem_grande || '';
+            let prodImg = selectedProductImage;
 
             if (!prodImg) {
-                const selectors = [
-                    '#imagemProduto',
-                    '.conteiner-imagem img',
-                    'img[itemprop="image"]',
-                    '.wrap_pgprod_grid img',
-                    '.grid_layout_pagprod img',
-                    '.produto-imagem-principal img',
-                    '[data-elemento="imagem-principal"]',
-                    '.principal .imagem img',
-                    '.foto-produto',
-                    '#foto-produto'
-                ];
-
-                let candidates = [];
-                let tags = document.querySelectorAll(selectors.join(', '));
-
-                for (let tag of tags) {
-                    let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
-                    if (url && !url.includes('base64') && !url.includes('PRODUTO_IMAGEM') && url.length > 15) {
-                        let weight = 0;
-                        if (url.includes('large') || url.includes('2500x2500') || url.includes('1000x1000')) weight += 60;
-                        if (url.includes('/produto/')) weight += 30;
-                        if (tag.id === 'imagemProduto' || tag.getAttribute('itemprop') === 'image') weight += 50;
-                        if (tag.closest('.conteiner-imagem')) weight += 40;
-                        if (url.includes('64x64') || url.includes('128x128') || url.includes('90x90') || url.includes('64x50')) weight -= 100;
-                        candidates.push({ url, weight });
-                    }
-                }
-
-                candidates.sort((a, b) => b.weight - a.weight);
-                prodImg = candidates.length > 0 ? candidates[0].url : '';
-            }
-
-            if (!prodImg) {
-                prodImg = document.querySelector('meta[property="og:image"]')?.content ||
-                    document.querySelector('meta[name="twitter:image"]')?.content || '';
-            }
-
-            if (prodImg && prodImg.startsWith('//')) {
-                prodImg = window.location.protocol + prodImg;
-            } else if (prodImg && !prodImg.startsWith('http')) {
-                prodImg = window.location.origin + (prodImg.startsWith('/') ? '' : '/') + prodImg;
+                const images = getAllProductImages();
+                prodImg = images.length > 0 ? images[0] : '';
             }
 
             const prodName = document.querySelector('h1.nome-produto, h1.titulo, .produto-nome h1, h1')?.innerText || document.title;
