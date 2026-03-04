@@ -215,7 +215,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p style="margin:20px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Qual foto da pe&ccedil;a voc&ecirc; quer provar?</p>
+                        <p style="margin:20px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Escolha Frente ou Costas:</p>
                         <div id="q-product-images" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:8px;"></div>
                         <p id="q-photo-hint" style="display:none;margin:0 0 16px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#ef4444;text-align:center;"></p>
                         <p style="margin:10px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Sua foto deve seguir estes requisitos:</p>
