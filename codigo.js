@@ -384,7 +384,7 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const images = getAllProductImages().slice(0, 10);
+            const images = getAllProductImages().slice(0, 3);
             if (images.length === 0) {
                 container.style.display = 'none';
                 const header = container.previousElementSibling;
