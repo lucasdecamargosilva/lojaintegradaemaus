@@ -216,7 +216,8 @@
                             </div>
                         </div>
                         <p style="margin:20px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Qual foto da pe&ccedil;a voc&ecirc; quer provar?</p>
-                        <div id="q-product-images" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:20px;"></div>
+                        <div id="q-product-images" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:8px;"></div>
+                        <p id="q-photo-hint" style="display:none;margin:0 0 16px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#ef4444;text-align:center;"></p>
                         <p style="margin:10px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Sua foto deve seguir estes requisitos:</p>
                         <div class="q-tips-grid" style="margin-top:0;">
                             <div class="q-tip-item"><i class="ph ph-t-shirt"></i><span>Com Roupa</span></div>
@@ -382,38 +383,70 @@
             return candidates.map(c => c.url);
         }
 
+        function isBackPhoto(index) {
+            // Heurística: geralmente a foto de costas é a 2ª imagem (index 1)
+            return index === 1;
+        }
+
+        function updatePhotoHint(index) {
+            const hint = document.getElementById('q-photo-hint');
+            if (!hint) return;
+            if (isBackPhoto(index)) {
+                hint.textContent = '⚠️ Você selecionou a foto de costas — envie também uma foto sua de costas.';
+                hint.style.display = 'block';
+            } else {
+                hint.textContent = '';
+                hint.style.display = 'none';
+            }
+        }
+
         function renderProductImages() {
             const container = document.getElementById('q-product-images');
             if (!container) return;
             container.innerHTML = '';
 
-            const images = getAllProductImages().slice(0, 3);
-            if (images.length === 0) {
-                container.style.display = 'none';
+            const hint = document.getElementById('q-photo-hint');
+            if (hint) { hint.textContent = ''; hint.style.display = 'none'; }
+
+            // Pré-valida imagens antes de renderizar (evita imagens quebradas)
+            const allImages = getAllProductImages().slice(0, 3);
+
+            const checks = allImages.map(url => new Promise(resolve => {
+                const tester = new Image();
+                tester.onload = () => resolve(url);
+                tester.onerror = () => resolve(null);
+                tester.src = url;
+            }));
+
+            Promise.all(checks).then(results => {
+                const images = results.filter(Boolean).slice(0, 2);
+
                 const header = container.previousElementSibling;
-                if (header && header.tagName === 'P') header.style.display = 'none';
-                return;
-            }
 
-            container.style.display = 'flex';
-            const header = container.previousElementSibling;
-            if (header && header.tagName === 'P') header.style.display = 'block';
+                if (images.length === 0) {
+                    container.style.display = 'none';
+                    if (header && header.tagName === 'P') header.style.display = 'none';
+                    return;
+                }
 
-            selectedProductImage = images[0];
+                container.style.display = 'flex';
+                if (header && header.tagName === 'P') header.style.display = 'block';
 
-            images.forEach((imgUrl, index) => {
-                const imgEl = document.createElement('img');
-                imgEl.src = imgUrl;
-                imgEl.className = 'q-prod-img-option' + (index === 0 ? ' selected' : '');
-                imgEl.onclick = () => {
-                    document.querySelectorAll('.q-prod-img-option').forEach(el => el.classList.remove('selected'));
-                    imgEl.classList.add('selected');
-                    selectedProductImage = imgUrl;
-                };
-                imgEl.onerror = () => {
-                    imgEl.remove();
-                };
-                container.appendChild(imgEl);
+                selectedProductImage = images[0];
+                updatePhotoHint(0);
+
+                images.forEach((imgUrl, index) => {
+                    const imgEl = document.createElement('img');
+                    imgEl.src = imgUrl;
+                    imgEl.className = 'q-prod-img-option' + (index === 0 ? ' selected' : '');
+                    imgEl.onclick = () => {
+                        document.querySelectorAll('.q-prod-img-option').forEach(el => el.classList.remove('selected'));
+                        imgEl.classList.add('selected');
+                        selectedProductImage = imgUrl;
+                        updatePhotoHint(index);
+                    };
+                    container.appendChild(imgEl);
+                });
             });
         }
 
