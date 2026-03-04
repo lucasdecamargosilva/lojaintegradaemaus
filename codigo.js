@@ -346,6 +346,9 @@
             let seen = new Set();
 
             for (let tag of tags) {
+                // Ignora imagens de vitrines e produtos recomendados
+                if (tag.closest('.listagem-item, .vitrine, .produtos-relacionados, .vitrine-destaque, .slick-cloned, .componente-carrossel')) continue;
+
                 let url = tag.src || tag.dataset.src || tag.getAttribute('data-zoom-image') || tag.srcset?.split(' ')[0] || '';
                 if (url && !url.includes('base64') && !url.includes('PRODUTO_IMAGEM') && url.length > 15) {
                     if (url.startsWith('//')) {
