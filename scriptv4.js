@@ -387,7 +387,7 @@
             const hint = document.getElementById('q-photo-hint');
             if (!hint) return;
             hint.textContent = '⚠️ Se você escolheu a foto de costas, envie uma foto sua também de costas, se escolheu a frente, envie de frente.';
-            hint.style.cssText = 'display:block;font-size:11px;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:8px 12px;margin:8px 0 16px;text-align:left;line-height:1.5;';
+            hint.style.cssText = 'display:block;font-size:11px;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:8px 12px;margin:8px 0 16px;text-align:center;line-height:1.5;';
         }
 
         function renderProductImages() {
