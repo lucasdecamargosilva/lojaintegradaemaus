@@ -220,7 +220,7 @@
                         <p style="margin:10px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Sua foto deve seguir estes requisitos:</p>
                         <div class="q-tips-grid" style="margin-top:0;">
                             <div class="q-tip-item"><i class="ph ph-t-shirt"></i><span>Com Roupa</span></div>
-                            <div class="q-tip-item"><i class="ph ph-person"></i><span>De Costas</span></div>
+                            <div class="q-tip-item"><i class="ph ph-person"></i><span>Corpo Todo</span></div>
                             <div class="q-tip-item"><i class="ph ph-sun"></i><span>Boa Luz</span></div>
                         </div>
                         <div style="display:flex;gap:20px;justify-content:center;margin-top:30px;">
@@ -409,6 +409,9 @@
                     document.querySelectorAll('.q-prod-img-option').forEach(el => el.classList.remove('selected'));
                     imgEl.classList.add('selected');
                     selectedProductImage = imgUrl;
+                };
+                imgEl.onerror = () => {
+                    imgEl.remove();
                 };
                 container.appendChild(imgEl);
             });
