@@ -386,7 +386,7 @@
         function updatePhotoHint() {
             const hint = document.getElementById('q-photo-hint');
             if (!hint) return;
-            hint.textContent = '⚠️ Se você escolheu a foto de costas, envie uma foto sua também de costas.';
+            hint.textContent = '⚠️ Se você escolheu a foto de costas, envie uma foto sua também de costas, se escolheu a frente, envie de frente.';
             hint.style.display = 'block';
         }
 
