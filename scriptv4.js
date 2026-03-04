@@ -217,7 +217,7 @@
                         </div>
                         <p style="margin:20px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Escolha Frente ou Costas:</p>
                         <div id="q-product-images" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:8px;"></div>
-                        <p id="q-photo-hint" style="display:none;margin:0 0 16px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#ef4444;text-align:center;"></p>
+                        <p id="q-photo-hint" style="display:none;font-size:11px;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:8px 12px;margin:8px 0 16px;text-align:left;line-height:1.5;"></p>
                         <p style="margin:10px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Sua foto deve seguir estes requisitos:</p>
                         <div class="q-tips-grid" style="margin-top:0;">
                             <div class="q-tip-item"><i class="ph ph-t-shirt"></i><span>Com Roupa</span></div>
@@ -387,7 +387,7 @@
             const hint = document.getElementById('q-photo-hint');
             if (!hint) return;
             hint.textContent = '⚠️ Se você escolheu a foto de costas, envie uma foto sua também de costas, se escolheu a frente, envie de frente.';
-            hint.style.display = 'block';
+            hint.style.cssText = 'display:block;font-size:11px;color:#92400e;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:8px 12px;margin:8px 0 16px;text-align:left;line-height:1.5;';
         }
 
         function renderProductImages() {
