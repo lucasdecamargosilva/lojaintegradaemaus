@@ -1,6 +1,12 @@
 (function () {
     console.log('[Provador] Script carregado');
 
+    // ===============================================
+    // 0. CHUMBAR A API KEY AQUI DIRETO NO CÓDIGO
+    // ===============================================
+    const apiKey = "pl_live_97e07dbb7468e58fa99d8ead73fec736e378a0918183457f5c7c3502fbee0413";
+    window.PROVOU_LEVOU_API_KEY = apiKey;
+
     const WEBHOOK_PROVA = 'https://n8n.segredosdodrop.com/webhook/quantic-materialize';
 
     const SIZES_TOP = ['XXP', 'XP', 'P', 'M', 'G', 'XG', 'XXG', '3XG', '4XG', '5XG'];
@@ -511,6 +517,13 @@
         };
 
         genBtn.onclick = async () => {
+            // 🚨 VALIDAÇÃO BÁSICA NO FRONT 🚨
+            const keyToUse = window.PROVOU_LEVOU_API_KEY;
+            if (!keyToUse || keyToUse.includes("COLOQUE_A_CHAVE_AQUI")) {
+                alert("Erro: API Key não configurada neste script.");
+                return;
+            }
+
             let prodImg = selectedProductImage;
 
             if (!prodImg) {
@@ -532,6 +545,9 @@
                 fd.append('product_name', prodName);
                 fd.append('product_type', currentProduct.category);
                 fd.append('product_fit', currentProduct.fit);
+
+                // 👉 INJETA A CHAVE NO FORM DATA PRO N8N LER
+                fd.append('api_key', keyToUse);
 
                 if (currentProduct.category === 'top') {
                     fd.append('height', document.getElementById('q-h-val').value);
@@ -577,11 +593,19 @@
                         if (content) content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' });
                     }, 100);
 
-                } else { throw new Error(); }
+                } else if (res.status === 401 || res.status === 403) {
+                    document.getElementById('q-loading-box').style.display = 'none';
+                    document.getElementById('q-step-upload').style.display = 'block';
+                    alert("Provas virtuais indisponíveis nesta loja no momento. (Assinatura Inativa/Chave Inválida)");
+                } else {
+                    throw new Error();
+                }
             } catch (e) {
+                document.getElementById('q-loading-box').style.display = 'none';
+                document.getElementById('q-step-upload').style.display = 'block';
                 console.error('[Provador] Erro ao gerar prova:', e);
-                alert('Ocorreu um erro ao processar sua imagem. Tente novamente.');
-                location.reload();
+                alert('Ocorreu um erro ao processar sua imagem (ou chave/servidor indisponíveis). Tente novamente.');
+
             }
         };
 
