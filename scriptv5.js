@@ -240,6 +240,10 @@
                                 <img id="q-pre-img" style="width:100%;height:100%;object-fit:cover;">
                             </div>
                         </div>
+                        <label style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;cursor:pointer;font-size:11px;line-height:1.4;color:#64748b;">
+                            <input type="checkbox" id="q-accept-terms" style="cursor:pointer;accent-color:#000;">
+                            <span>Ao continuar, concordo com os <a href="http://provoulevou.com.br/termos.html" target="_blank" style="color:#8b5cf6;text-decoration:underline;">Termos e Condições</a></span>
+                        </label>
                         <button class="q-btn-black" id="q-btn-generate" disabled>Ver no meu corpo</button>
                     </div>
                     <div style="display:none;padding:60px 0;text-align:center;" id="q-loading-box">
@@ -487,6 +491,8 @@
             checkFields();
         });
 
+        document.getElementById('q-accept-terms').onchange = checkFields;
+
         function checkFields() {
             const nums = phoneInput.value.replace(/\D/g, '');
             const phoneOk = nums.length >= 10 && nums.length <= 11;
@@ -495,7 +501,7 @@
             let measOk = currentProduct.category === 'top'
                 ? !!document.getElementById('q-h-val').value && !!document.getElementById('q-w-val').value
                 : !!document.getElementById('q-cin-val').value && !!document.getElementById('q-quad-val').value;
-            genBtn.disabled = !(measOk && userPhoto && phoneOk);
+            genBtn.disabled = !(measOk && userPhoto && phoneOk && document.getElementById('q-accept-terms').checked);
         }
 
         ['q-h-val', 'q-w-val', 'q-cin-val', 'q-quad-val'].forEach(id => {
