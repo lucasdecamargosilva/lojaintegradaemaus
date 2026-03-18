@@ -208,18 +208,6 @@
                                 <input type="tel" id="q-phone" class="q-input" placeholder="(11) 99999-9999" maxlength="15">
                                 <div id="q-phone-error" class="q-status-msg">Insira um número válido</div>
                             </div>
-                            <div id="q-fields-top" style="display:none;">
-                                <div class="q-input-row">
-                                    <div class="q-group"><label>Altura (cm)</label><input type="text" id="q-h-val" class="q-input" placeholder="Ex: 175"></div>
-                                    <div class="q-group"><label>Peso (kg)</label><input type="text" id="q-w-val" class="q-input" placeholder="Ex: 80"></div>
-                                </div>
-                            </div>
-                            <div id="q-fields-bottom" style="display:none;">
-                                <div class="q-input-row">
-                                    <div class="q-group"><label>Cintura (cm)</label><input type="text" id="q-cin-val" class="q-input" placeholder="Ex: 84"><p class="q-input-hint">Meça ao redor do umbigo</p></div>
-                                    <div class="q-group"><label>Quadril (cm)</label><input type="text" id="q-quad-val" class="q-input" placeholder="Ex: 100"><p class="q-input-hint">Parte mais larga do quadril</p></div>
-                                </div>
-                            </div>
                         </div>
                         <p style="margin:20px 0 10px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);text-align:center;">Escolha Frente ou Costas:</p>
                         <div id="q-product-images" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:8px;"></div>
@@ -459,8 +447,6 @@
 
         function applyProduct(product) {
             currentProduct = product;
-            document.getElementById('q-fields-top').style.display = product.category === 'top' ? 'block' : 'none';
-            document.getElementById('q-fields-bottom').style.display = product.category === 'bottom' ? 'block' : 'none';
         }
 
         openBtn.onclick = () => {
@@ -498,16 +484,8 @@
             const phoneOk = nums.length >= 10 && nums.length <= 11;
             document.getElementById('q-phone-error').style.display = (phoneInput.value.length > 0 && !phoneOk) ? 'block' : 'none';
             phoneInput.style.borderColor = (phoneInput.value.length > 0 && !phoneOk) ? '#ef4444' : 'var(--q-border)';
-            let measOk = currentProduct.category === 'top'
-                ? !!document.getElementById('q-h-val').value && !!document.getElementById('q-w-val').value
-                : !!document.getElementById('q-cin-val').value && !!document.getElementById('q-quad-val').value;
-            genBtn.disabled = !(measOk && userPhoto && phoneOk && document.getElementById('q-accept-terms').checked);
+            genBtn.disabled = !(userPhoto && phoneOk && document.getElementById('q-accept-terms').checked);
         }
-
-        ['q-h-val', 'q-w-val', 'q-cin-val', 'q-quad-val'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.addEventListener('input', checkFields);
-        });
 
         realInput.onchange = (e) => {
             userPhoto = e.target.files[0];
@@ -555,14 +533,6 @@
                 // 👉 INJETA A CHAVE NO FORM DATA PRO N8N LER
                 fd.append('api_key', keyToUse);
 
-                if (currentProduct.category === 'top') {
-                    fd.append('height', document.getElementById('q-h-val').value);
-                    fd.append('weight', document.getElementById('q-w-val').value);
-                } else {
-                    fd.append('cintura', document.getElementById('q-cin-val').value);
-                    fd.append('quadril', document.getElementById('q-quad-val').value);
-                }
-
                 if (prodImg) {
                     try {
                         const b = await fetch(prodImg).then(r => r.blob());
@@ -581,14 +551,6 @@
                     const blob = await res.blob();
                     document.getElementById('q-loading-box').style.display = 'none';
                     document.getElementById('q-final-view-img').src = URL.createObjectURL(blob);
-
-                    const hVal = document.getElementById('q-h-val').value;
-                    const wVal = document.getElementById('q-w-val').value;
-                    const cVal = document.getElementById('q-cin-val').value;
-                    const resH = document.getElementById('q-res-height');
-                    const resW = document.getElementById('q-res-weight');
-                    if (resH) resH.textContent = hVal ? (parseFloat(hVal) / 100).toFixed(2) : '—';
-                    if (resW) resW.textContent = wVal || (cVal ? cVal + ' cm' : '—');
 
                     document.querySelector('.q-card-ia').classList.add('is-result');
                     const stepRes = document.getElementById('q-step-result');
