@@ -63,8 +63,11 @@
     let currentProduct = { category: 'top', fit: 'regular' };
 
     function calcTop(fit) {
-        const altura = parseFloat(document.getElementById('q-h-val').value);
-        const peso = parseFloat(document.getElementById('q-w-val').value);
+        const hEl = document.getElementById('q-h-val');
+        const wEl = document.getElementById('q-w-val');
+        if (!hEl || !wEl) return;
+        const altura = parseFloat(hEl.value);
+        const peso = parseFloat(wEl.value);
         if (!altura || !peso) return;
         const torax = estimarTorax(altura, peso);
         const folga = { regular: 4, oversized: 8, oversizedSS: 8, hoodie: 6, boxyHoodie: 12, puffer: 10, vest: 5, boxyHenley: 9 };
@@ -73,8 +76,11 @@
     }
 
     function calcBottom(fit) {
-        const cintura = parseFloat(document.getElementById('q-cin-val').value);
-        const quadril = parseFloat(document.getElementById('q-quad-val').value);
+        const cEl = document.getElementById('q-cin-val');
+        const qEl = document.getElementById('q-quad-val');
+        if (!cEl || !qEl) return;
+        const cintura = parseFloat(cEl.value);
+        const quadril = parseFloat(qEl.value);
         if (!cintura || !quadril) return;
         let gradeC, gradeQ, sizes;
         if (fit === 'tailoring') { gradeC = GRADE.bottomTailoring; gradeQ = GRADE.quadrilTailoring; sizes = SIZES_BOTTOM; }
