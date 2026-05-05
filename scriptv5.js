@@ -158,7 +158,7 @@
         .q-btn-outline { background:var(--q-bg);color:var(--q-primary);border:1px solid var(--q-border);width:100%;padding:18px;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:0.3s; }
         .q-btn-outline:hover { background:var(--q-primary);color:var(--q-bg); }
         .q-powered-footer { background:var(--q-bg);padding:20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;border-top:1px solid var(--q-gray); }
-        .q-quantic-logo { height:18px; filter: brightness(0); }
+        .q-quantic-logo { height:28px; filter: brightness(0); opacity:0.85; }
         .q-status-msg { display:none;font-size:9px;letter-spacing:1px;color:#ef4444;margin-top:8px;font-weight:600;text-align:left;text-transform:uppercase; }
         @keyframes q-slide { from{transform:translateX(-100%)} to{transform:translateX(100%)} }
         @keyframes q-pulse-text { 0%,100%{opacity:0.4;transform:scale(0.98)} 50%{opacity:1;transform:scale(1)} }
@@ -224,6 +224,7 @@
                             <div class="q-tip-item"><i class="ph ph-person"></i><span>Corpo Todo</span></div>
                             <div class="q-tip-item"><i class="ph ph-sun"></i><span>Boa Luz</span></div>
                         </div>
+                        <div style="display:block !important;visibility:visible !important;margin:14px 0 0;font-size:13px;color:#444;text-align:center;line-height:1.6;padding:14px 12px;background:#fff8e6;border:1px solid #f0d77a;border-radius:4px;font-weight:500;">&#9888;&#65039; Se voc&#234; escolheu a foto de costas, envie uma foto sua tamb&#233;m de costas. Se escolheu a frente, envie de frente.</div>
                         <div style="display:flex;gap:20px;justify-content:center;margin-top:30px;">
                             <div id="q-trigger-upload" style="width:120px;height:160px;border:1px solid var(--q-border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:var(--q-gray);transition:0.3s;">
                                 <i class="ph ph-camera-plus" style="font-size:32px;color:var(--q-primary);margin-bottom:10px;"></i>
@@ -261,10 +262,6 @@
                                 <i class="ph ph-info"></i>
                                 <span>A simulação AI considera o caimento do tecido baseado na sua estrutura corporal informada.</span>
                             </div>
-                            <button class="q-btn-buy" id="q-add-to-cart-btn">
-                                <i class="ph ph-shopping-cart"></i>
-                                Adicionar ao Carrinho
-                            </button>
                             <button class="q-btn-outline" id="q-btn-back">Voltar ao Produto</button>
                             <p class="q-res-mobile-only" style="margin-top:30px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);cursor:pointer;text-decoration:underline;text-underline-offset:4px;" id="q-retry-btn">Tentar outra foto</p>
                         </div>
@@ -273,7 +270,7 @@
                 <div class="q-powered-footer">
                     <span style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);">Powered by</span>
                     <a href="https://provoulevou.com.br" target="_blank" style="display:block;margin:0;padding:0;line-height:0;">
-                        <img src="https://i.ibb.co/jP66Xwqt/logo-provou-levou-sem-fundo.png" class="q-quantic-logo">
+                        <img src="https://i.ibb.co/MD3B4FQf/Logo-provou-preto-1.png" class="q-quantic-logo">
                     </a>
                 </div>
             </div>
@@ -583,71 +580,8 @@
             }
         };
 
-        document.getElementById('q-add-to-cart-btn').onclick = () => {
-            const size = recommendedSize;
-            console.log('[Provador] Adicionando ao carrinho. Tamanho:', size);
+// add-to-cart handler removido (botão eliminado)
 
-            let selected = false;
-
-            const attrLinks = document.querySelectorAll('.atributo-comum a, .atributo-item');
-            for (const link of attrLinks) {
-                const txt = link.dataset.variacaoNome || link.textContent.trim();
-                if (txt.toUpperCase() === size.toUpperCase()) {
-                    link.click();
-                    selected = true;
-                    console.log('[Provador] Tamanho selecionado via .atributo-item:', txt);
-                    break;
-                }
-            }
-
-            if (!selected) {
-                const selects = document.querySelectorAll('select');
-                for (const sel of selects) {
-                    const opt = [...sel.options].find(o =>
-                        o.value.trim().toUpperCase() === size.toUpperCase() ||
-                        o.text.trim().toUpperCase() === size.toUpperCase()
-                    );
-                    if (opt) {
-                        sel.value = opt.value;
-                        sel.dispatchEvent(new Event('change', { bubbles: true }));
-                        selected = true;
-                        console.log('[Provador] Tamanho selecionado via select');
-                        break;
-                    }
-                }
-            }
-
-            if (!selected) console.warn('[Provador] Tamanho não encontrado na página:', size);
-
-            function tryAddToCart() {
-                const addBtnSelectors = [
-                    '.botao.principal', '.botao-comprar', '.btn-add-to-cart',
-                    'button.principal', 'a.botao.principal', '[data-btn-comprar]',
-                    'button[type="submit"]', '#btn-comprar',
-                ];
-                for (const sel of addBtnSelectors) {
-                    const btn = document.querySelector(sel);
-                    if (btn && !btn.disabled) {
-                        btn.click();
-                        console.log('[Provador] Botão comprar clicado:', sel);
-                        if (typeof $ !== 'undefined') {
-                            $('body').on('minicart_state_changed', function () {
-                                modal.style.display = 'none';
-                            });
-                        }
-                        return true;
-                    }
-                }
-                console.warn('[Provador] Botão comprar não encontrado');
-                return false;
-            }
-
-            setTimeout(() => {
-                const ok = tryAddToCart();
-                if (!ok) setTimeout(() => tryAddToCart(), 400);
-                setTimeout(() => { modal.style.display = 'none'; }, 1200);
-            }, selected ? 300 : 0);
-        };
 
         console.log('[Provador] Todos os eventos registrados com sucesso');
     }
