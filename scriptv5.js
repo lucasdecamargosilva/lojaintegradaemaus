@@ -482,6 +482,9 @@
         };
 
         genBtn.onclick = async () => {
+            const _gNums = (phoneInput.value || '').replace(/\D/g, '');
+            const _gPhoneOk = (_gNums.length === 10 || _gNums.length === 11) && /^[1-9][1-9]/.test(_gNums) && (_gNums.length === 10 || _gNums[2] === '9');
+            if (!userPhoto || !_gPhoneOk) { phoneInput.focus(); return; }
             // 🚨 VALIDAÇÃO BÁSICA NO FRONT 🚨
             const keyToUse = window.PROVOU_LEVOU_API_KEY;
             if (!keyToUse || keyToUse.includes("COLOQUE_A_CHAVE_AQUI")) {
