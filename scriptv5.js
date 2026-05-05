@@ -235,13 +235,16 @@
                             <div style="position:absolute;top:0;left:0;height:100%;width:30%;background:var(--q-primary);animation:q-slide 1.5s infinite linear;"></div>
                         </div>
                     </div>
-                    <div id="q-step-result" style="display:none;flex-direction:column;align-items:center;">
-                        <div id="q-result-img-col" style="width:100%;border:1px solid var(--q-border);margin-bottom:30px;background:var(--q-gray);">
+                    <div id="q-step-result" style="display:none;flex-direction:column;align-items:stretch;">
+                        <span class="q-res-title" style="display:block;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--q-text);padding:18px 28px 14px;margin:0;border-bottom:1px solid var(--q-border);text-align:center;">Veja como ficou em voc&ecirc; &#x2728;</span>
+                        <div id="q-result-img-col" style="width:100%;background:var(--q-gray);overflow:hidden;display:flex;align-items:center;justify-content:center;border:none;margin:0;">
                             <img id="q-final-view-img" style="width:100%;height:auto;display:block;">
                         </div>
-                        <div id="q-result-actions-col" style="width:100%;">
+                        <div id="q-result-actions-col" style="width:100%;display:flex;flex-direction:column;gap:12px;padding:20px 28px;">
                             <button class="q-btn-outline" id="q-btn-back">Voltar ao Produto</button>
-                            <p class="q-res-mobile-only" style="margin-top:30px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);cursor:pointer;text-decoration:underline;text-underline-offset:4px;" id="q-retry-btn">Tentar outra foto</p>
+                            <button class="q-btn-black" id="q-retry-btn" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:0;">
+                                <i class="ph ph-camera"></i> Tentar com outra foto
+                            </button>
                         </div>
                     </div>
                 </div>
