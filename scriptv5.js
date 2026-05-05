@@ -172,21 +172,9 @@
             .q-card-ia.is-result #q-result-img-col{width:45%!important;height:100%!important;margin:0!important;border:none!important;border-right:1px solid var(--q-border)!important;position:relative!important;flex-shrink:0}
             .q-card-ia.is-result #q-result-img-col img{position:absolute!important;top:0;left:0;width:100%!important;height:100%!important;object-fit:cover!important;object-position:top center!important}
             .q-card-ia.is-result #q-result-actions-col{width:55%!important;height:100%!important;padding:40px!important;display:flex!important;flex-direction:column;justify-content:center;box-sizing:border-box;overflow-y:auto}
-            .q-card-ia.is-result .q-res-title{display:block!important;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--q-text);margin-bottom:4px}
-            .q-card-ia.is-result .q-res-subtitle{display:block!important;font-size:11px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:30px}
-            .q-card-ia.is-result .q-metrics-row{display:flex!important;gap:15px;margin-bottom:30px}
-            .q-card-ia.is-result .q-metric-card{flex:1;background:transparent;border:1px solid var(--q-border);border-radius:0;padding:16px}
             .q-card-ia.is-result .q-metric-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--q-text-light);margin-bottom:6px;display:block}
             .q-card-ia.is-result .q-metric-value{font-size:20px;font-weight:700;color:var(--q-text)}
             .q-card-ia.is-result .q-metric-unit{font-size:12px;color:var(--q-text-light);margin-left:2px}
-            .q-card-ia.is-result .q-size-card{display:flex!important;align-items:center;gap:16px;background:var(--q-gray);border:1px solid var(--q-border);border-radius:0;padding:20px;margin-bottom:24px}
-            .q-card-ia.is-result .q-size-circle{width:44px;height:44px;border-radius:50%;background:var(--q-primary);color:var(--q-bg);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
-            .q-card-ia.is-result .q-size-info{flex:1}
-            .q-card-ia.is-result .q-size-info strong{display:block;font-size:11px;font-weight:600;color:var(--q-text);margin-bottom:4px;letter-spacing:1.5px;text-transform:uppercase}
-            .q-card-ia.is-result .q-size-info span{font-size:9px;color:var(--q-text-light);letter-spacing:1px;text-transform:uppercase;display:block}
-            .q-card-ia.is-result .q-size-check{color:var(--q-primary);font-size:24px;flex-shrink:0}
-            .q-card-ia.is-result .q-res-note{display:flex!important;align-items:flex-start;gap:8px;font-size:10px;color:var(--q-text-light);font-style:italic;letter-spacing:1px;margin-bottom:24px;line-height:1.5}
-            .q-card-ia.is-result .q-res-note i{flex-shrink:0;margin-top:1px;font-size:14px}
             .q-card-ia.is-result .q-btn-buy{border-radius:0!important;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px!important;padding:18px!important;margin-bottom:12px;font-weight:600;letter-spacing:2px!important;text-transform:uppercase!important}
             .q-card-ia.is-result .q-btn-outline{border-radius:0!important;display:flex;align-items:center;justify-content:center;font-size:11px!important;padding:18px!important;margin-top:0;font-weight:600;letter-spacing:2px!important;text-transform:uppercase!important}
             .q-card-ia.is-result .q-res-mobile-only{display:none!important}
@@ -252,16 +240,6 @@
                             <img id="q-final-view-img" style="width:100%;height:auto;display:block;">
                         </div>
                         <div id="q-result-actions-col" style="width:100%;">
-                            <span class="q-res-title" style="display:none;">Provador Virtual</span>
-                            <span class="q-res-subtitle" style="display:none;">Simulação baseada no seu perfil corporal</span>
-                            <div class="q-metrics-row" style="display:none;">
-                                <div class="q-metric-card"><span class="q-metric-label">Altura</span><span class="q-metric-value" id="q-res-height">—</span><span class="q-metric-unit">m</span></div>
-                                <div class="q-metric-card"><span class="q-metric-label">Peso</span><span class="q-metric-value" id="q-res-weight">—</span><span class="q-metric-unit">kg</span></div>
-                            </div>
-                            <div class="q-res-note" style="display:none;">
-                                <i class="ph ph-info"></i>
-                                <span>A simulação AI considera o caimento do tecido baseado na sua estrutura corporal informada.</span>
-                            </div>
                             <button class="q-btn-outline" id="q-btn-back">Voltar ao Produto</button>
                             <p class="q-res-mobile-only" style="margin-top:30px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);cursor:pointer;text-decoration:underline;text-underline-offset:4px;" id="q-retry-btn">Tentar outra foto</p>
                         </div>
