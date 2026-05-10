@@ -250,8 +250,8 @@
                 </div>
                 <div class="q-powered-footer">
                     <span style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--q-text-light);">Powered by</span>
-                    <a href="https://provoulevou.com.br" target="_blank" style="display:block;margin:0;padding:0;line-height:0;">
-                        <img src="https://i.ibb.co/MD3B4FQf/Logo-provou-preto-1.png" class="q-quantic-logo">
+                    <a href="https://provoulevou.com.br/?utm_source=widget&utm_medium=parceiro&utm_campaign=emaus" target="_blank" rel="dofollow noopener" style="display:block;margin:0;padding:0;line-height:0;">
+                        <img src="https://i.ibb.co/MD3B4FQf/Logo-provou-preto-1.png" class="q-quantic-logo" alt="Provou Levou - Provador Virtual com IA">
                     </a>
                 </div>
             </div>
