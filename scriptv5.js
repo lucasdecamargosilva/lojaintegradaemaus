@@ -252,7 +252,7 @@
                         </div>
                     </div>
                     <div id="q-step-result" style="display:none;flex-direction:column;align-items:stretch;">
-                        <span class="q-res-title" style="display:block;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--q-text);padding:18px 28px 14px;margin:0;border-bottom:1px solid var(--q-border);text-align:center;">Veja como ficou em voc&ecirc; &#x2728;</span>
+                        <span class="q-res-title" style="display:block;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--q-text);padding:18px 28px 14px;margin:0;border-bottom:1px solid var(--q-border);text-align:center;">Veja como ficou em voc&ecirc;</span>
                         <div id="q-result-img-col" style="width:100%;background:var(--q-gray);overflow:hidden;display:flex;align-items:center;justify-content:center;border:none;margin:0;">
                             <img id="q-final-view-img" style="width:100%;height:auto;display:block;">
                         </div>
